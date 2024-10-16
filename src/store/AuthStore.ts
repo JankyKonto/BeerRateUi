@@ -1,41 +1,58 @@
 import { makeAutoObservable } from "mobx";
+import { api, LoginResponse, RegisterResponse } from "../utils/api";
 
 export class AuthStore {
-  private _userId = "";
-  private _username = "";
-  private _email = "";
+  userId = 0;
+  username = "";
+  email = "";
 
   constructor() {
     makeAutoObservable(this);
-  }
-
-  get userId() {
-    return this._userId;
-  }
-
-  set userId(userId: string) {
-    this._userId = userId;
-  }
-
-  get username() {
-    return this._username;
-  }
-
-  set username(username: string) {
-    this._username = username;
-  }
-
-  get email() {
-    return this._email;
-  }
-
-  set email(email: string) {
-    this._email = email;
   }
 
   get isLoggedIn(): boolean {
     return !!(this.userId && this.username && this.email);
   }
 
-  logout() {}
+  async register(
+    email: string,
+    username: string,
+    password: string
+  ): Promise<string> {
+    const data: RegisterResponse = await api.fetchRegister(
+      username,
+      email,
+      password
+    );
+
+    if (data.errorMessage) {
+      return data.errorMessage;
+    }
+
+    return "";
+  }
+
+  async login(email: string, password: string): Promise<string> {
+    const data: LoginResponse = await api.fetchLogin(email, password);
+
+    if (data.errorMessage) {
+      console.error("Login error", data.errorMessage);
+      return data.errorMessage;
+    } else if (data.id && data.username) {
+      this.userId = data.id;
+      this.email = data.email;
+      this.username = data.username;
+
+      return "";
+    } else {
+      console.error("Invalid login response");
+      return "Invalid response";
+    }
+  }
+
+  logout() {
+    this.userId = 0;
+    this.username = "";
+    this.email = "";
+  }
 }
