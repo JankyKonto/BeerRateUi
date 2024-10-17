@@ -40,7 +40,7 @@ const RegisterPage = observer(() => {
   return (
     <div className="container">
       <div className="d-flex justify-content-center mt-5">
-        <div className="border rounded p-4 w-25">
+        <div className="border rounded p-4 w-50">
           {errorMessage && (
             <div className="alert alert-danger h-1">{errorMessage}</div>
           )}

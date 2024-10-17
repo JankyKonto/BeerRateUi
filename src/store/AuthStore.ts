@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { api, LoginResponse, RegisterResponse } from "../utils/api";
+import { api, LoginResponse, RegisterResponse } from "../service/api";
 
 export class AuthStore {
   userId = 0;
@@ -8,6 +8,7 @@ export class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
+    this.refresh();
   }
 
   get isLoggedIn(): boolean {
@@ -48,6 +49,10 @@ export class AuthStore {
       console.error("Invalid login response");
       return "Invalid response";
     }
+  }
+
+  async refresh() {
+    api.fetchRefresh();
   }
 
   logout() {
