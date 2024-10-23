@@ -6,6 +6,7 @@ export class RegisterPageStore {
   private _email = "";
   private _password = "";
   private _repeatedPassword = "";
+  private _errorMessage = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -43,13 +44,21 @@ export class RegisterPageStore {
     this._repeatedPassword = value;
   }
 
+  get errorMessage() {
+    return this._errorMessage;
+  }
+
   get passwordsMatch() {
     return this._password === this._repeatedPassword;
   }
 
-  submit() {
+  async register() {
     if (this.username && this.email && this.password && this.passwordsMatch) {
-      store.authStore.register(this.email, this.username, this.password);
+      this._errorMessage = await store.authStore.register(
+        this.email,
+        this.username,
+        this.password
+      );
     }
   }
 }

@@ -2,13 +2,37 @@ import { makeAutoObservable } from "mobx";
 import { api, LoginResponse, RegisterResponse } from "../service/api";
 
 export class AuthStore {
-  userId = 0;
-  username = "";
-  email = "";
+  private _userId = 0;
+  private _username = "";
+  private _email = "";
 
   constructor() {
     makeAutoObservable(this);
     this.refresh();
+  }
+
+  get userId() {
+    return this._userId;
+  }
+
+  set userId(value: number) {
+    this._userId = value;
+  }
+
+  get username() {
+    return this._username;
+  }
+
+  set username(value: string) {
+    this._username = value;
+  }
+
+  get email() {
+    return this._email;
+  }
+
+  set email(value: string) {
+    this._email = value;
   }
 
   get isLoggedIn(): boolean {
@@ -39,25 +63,36 @@ export class AuthStore {
     if (data.errorMessage) {
       console.error("Login error", data.errorMessage);
       return data.errorMessage;
-    } else if (data.id && data.username) {
+    } else {
       this.userId = data.id;
       this.email = data.email;
       this.username = data.username;
 
       return "";
-    } else {
-      console.error("Invalid login response");
-      return "Invalid response";
     }
   }
 
-  async refresh() {
-    api.fetchRefresh();
+  async refresh(): Promise<string> {
+    const data = await api.fetchRefresh();
+
+    if (data.errorMessage) {
+      console.error("Login error", data.errorMessage);
+      return data.errorMessage;
+    } else {
+      this.email = data.email;
+      this.userId = data.id;
+      this.username = data.username;
+      return "";
+    }
   }
 
-  logout() {
-    this.userId = 0;
-    this.username = "";
-    this.email = "";
+  async logout() {
+    const data = await api.fetchRevoke();
+    console.log(data);
+    if (!data.errorMessage) {
+      this.userId = 0;
+      this.username = "";
+      this.email = "";
+    }
   }
 }

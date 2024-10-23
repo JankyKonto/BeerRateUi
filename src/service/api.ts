@@ -10,6 +10,14 @@ export interface LoginResponse {
   errorMessage?: string;
 }
 
+export interface RemindPasswordResponse {
+  errorMessage?: string;
+}
+
+export interface RevokeResponse {
+  errorMessage?: string;
+}
+
 type FetchMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 const BACKEND_URL = "https://localhost:7280/api";
@@ -34,7 +42,7 @@ export class Api {
     if (response.ok) {
       return data;
     } else {
-      throw new Error(data.errorMessage || "Fetch error occured");
+      throw new Error(data.message || "Fetch error occured");
     }
   }
 
@@ -54,14 +62,12 @@ export class Api {
         }
       );
 
-      return {
-        username: data.username,
-      };
-    } catch (error) {
+      return data;
+    } catch (error: any) {
       console.error(error);
       return {
         username: "",
-        errorMessage: "Error in fetchRegister",
+        errorMessage: error.message || "Error in fetchRegister",
       };
     }
   }
@@ -77,18 +83,14 @@ export class Api {
         }
       );
 
-      return {
-        id: data.id,
-        username: data.username,
-        email: data.email,
-      };
-    } catch (error) {
+      return data;
+    } catch (error: any) {
       console.error(error);
       return {
         id: 0,
         username: "",
         email: "",
-        errorMessage: "Error in fetchLogin",
+        errorMessage: error.message || "Error in fetchLogin",
       };
     }
   }
@@ -100,18 +102,45 @@ export class Api {
         "POST",
         {}
       );
-      return {
-        id: data.id,
-        username: data.username,
-        email: data.email,
-      };
-    } catch (error) {
+      return data;
+    } catch (error: any) {
       console.error(error);
       return {
         id: 0,
         username: "",
         email: "",
-        errorMessage: "Error in fetchLogin",
+        errorMessage: error.message || "Error in fetchLogin",
+      };
+    }
+  }
+
+  async fetchRemindPassword(email: string): Promise<RemindPasswordResponse> {
+    try {
+      const data = await this.fetchFromApi<RemindPasswordResponse>(
+        "User/remind-password",
+        "POST",
+        {
+          email: email,
+        }
+      );
+
+      return data;
+    } catch (error: any) {
+      console.error(error);
+      return {
+        errorMessage: error.message || "Error in fetchRemindPassword",
+      };
+    }
+  }
+
+  async fetchRevoke(): Promise<RevokeResponse> {
+    try {
+      await this.fetchFromApi("User/revoke", "DELETE", {});
+      return {};
+    } catch (error: any) {
+      console.error("fetchRevoke error", error);
+      return {
+        errorMessage: error.message || "Error in fetchRevoke",
       };
     }
   }

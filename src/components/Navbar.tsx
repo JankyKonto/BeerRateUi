@@ -22,7 +22,7 @@ const Navbar: React.FC<Props> = observer(
     return (
       <nav ref={navRef}>
         <div className="navbar-logo">
-          <NavLink to="/">Beer Rate</NavLink>
+          <NavLink to="/">🍺 Beer Rate</NavLink>
         </div>
 
         <div className="navbar-items">

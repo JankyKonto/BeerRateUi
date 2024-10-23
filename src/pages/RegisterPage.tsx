@@ -1,32 +1,18 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { store } from "../store/Store";
 import { Button, Form } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 
 const RegisterPage = observer(() => {
-  const [errorMessage, setErrorMessage] = useState("");
-
   const navigateTo = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    store.registerPageStore.submit();
-    /*
-    const errorMessage = await store.authStore.register(
-      email,
-      username,
-      password
-    );
-    */
+    await store.registerPageStore.register();
 
-    /*
-    if (!errorMessage) {
+    if (!store.registerPageStore.errorMessage) {
       navigateTo("/");
     }
-
-    setErrorMessage(errorMessage);
-    */
   };
 
   if (store.authStore.isLoggedIn) {
@@ -41,8 +27,10 @@ const RegisterPage = observer(() => {
     <div className="container">
       <div className="d-flex justify-content-center mt-5">
         <div className="border rounded p-4 w-50">
-          {errorMessage && (
-            <div className="alert alert-danger h-1">{errorMessage}</div>
+          {store.registerPageStore.errorMessage && (
+            <div className="alert alert-danger h-1">
+              {store.registerPageStore.errorMessage}
+            </div>
           )}
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="register.username">
