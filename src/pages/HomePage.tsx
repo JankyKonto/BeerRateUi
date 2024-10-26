@@ -1,5 +1,13 @@
+import { Container, Paper, Typography } from "@mui/material";
+
 const HomePage = () => {
-  return <h1>Beer Rate App</h1>;
+  return (
+    <Container maxWidth="md">
+      <Paper elevation={4} sx={{ mt: 15 }}>
+        <Typography>Welcome to he beer app</Typography>
+      </Paper>
+    </Container>
+  );
 };
 
 export default HomePage;
