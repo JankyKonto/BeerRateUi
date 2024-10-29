@@ -7,6 +7,7 @@ export class LoginPageStore {
   private _isResetPasswordModalShown = false;
   private _resetEmail = "";
   private _errorMessage = "";
+  private _isLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -48,12 +49,18 @@ export class LoginPageStore {
     return this._errorMessage;
   }
 
+  get isLoading() {
+    return this._isLoading;
+  }
+
   async login() {
     if (this.email && this.password) {
+      this._isLoading = true;
       this._errorMessage = await store.authStore.login(
         this.email,
         this.password
       );
+      this._isLoading = false;
     }
   }
 

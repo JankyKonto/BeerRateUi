@@ -1,7 +1,15 @@
-import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { store } from "../store/Store";
-import { Button, Form } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
+import RegisterPageSkeleton from "../components/skeletons/RegisterPageSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = observer(() => {
   const navigateTo = useNavigate();
@@ -9,84 +17,80 @@ const RegisterPage = observer(() => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await store.registerPageStore.register();
-
     if (!store.registerPageStore.errorMessage) {
       navigateTo("/");
     }
   };
 
-  if (store.authStore.isLoggedIn) {
-    return (
-      <div className="d-flex justify-content-center mt-4">
-        <h1>Jesteś już zalogowany</h1>
-      </div>
-    );
-  }
-
   return (
-    <div className="container">
-      <div className="d-flex justify-content-center mt-5">
-        <div className="border rounded p-4 w-50">
-          {store.registerPageStore.errorMessage && (
-            <div className="alert alert-danger h-1">
-              {store.registerPageStore.errorMessage}
-            </div>
-          )}
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="register.username">
-              <Form.Label>Nazwa użytkownika</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Podaj nazwę użytkownika..."
-                value={store.registerPageStore.username}
-                onChange={(e) => {
-                  store.registerPageStore.username = e.target.value;
-                }}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="register.email">
-              <Form.Label>Adres email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Podaj adres email..."
-                value={store.registerPageStore.email}
-                onChange={(e) => {
-                  store.registerPageStore.email = e.target.value;
-                }}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="register.password">
-              <Form.Label>Hasło</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Podaj hasło..."
-                value={store.registerPageStore.password}
-                onChange={(e) => {
-                  store.registerPageStore.password = e.target.value;
-                }}
-                isInvalid={!store.registerPageStore.passwordsMatch}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="register.repeatedpassword">
-              <Form.Label>Powtórz hasło</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Powtórz hasło..."
-                value={store.registerPageStore.repeatedPassword}
-                onChange={(e) => {
-                  store.registerPageStore.repeatedPassword = e.target.value;
-                }}
-                isInvalid={!store.registerPageStore.passwordsMatch}
-              />
-            </Form.Group>
-
-            <div className="d-flex justify-content-center">
-              <Button type="submit">Zarejestruj się</Button>
-            </div>
-          </Form>
-        </div>
-      </div>
-    </div>
+    <Container maxWidth="xs">
+      <Paper elevation={4} sx={{ padding: "20px", marginTop: "50px" }}>
+        <Typography variant="h5" component="h1" gutterBottom align="center">
+          Rejestracja
+        </Typography>
+        {store.registerPageStore.isLoading ? (
+          <RegisterPageSkeleton />
+        ) : (
+          <Box component="form" onSubmit={handleSubmit}>
+            <TextField
+              label="Nazwa użytkownika"
+              type="text"
+              variant="outlined"
+              fullWidth
+              required
+              margin="normal"
+              value={store.registerPageStore.username}
+              onChange={(e) =>
+                (store.registerPageStore.username = e.target.value)
+              }
+            />
+            <TextField
+              label="Adres email"
+              type="email"
+              variant="outlined"
+              fullWidth
+              required
+              margin="normal"
+              value={store.registerPageStore.email}
+              onChange={(e) => (store.registerPageStore.email = e.target.value)}
+            />
+            <TextField
+              label="Hasło"
+              type="password"
+              variant="outlined"
+              fullWidth
+              required
+              margin="normal"
+              value={store.registerPageStore.password}
+              onChange={(e) =>
+                (store.registerPageStore.password = e.target.value)
+              }
+            />
+            <TextField
+              label="Powtórz hasło"
+              type="password"
+              variant="outlined"
+              fullWidth
+              required
+              margin="normal"
+              value={store.registerPageStore.repeatedPassword}
+              onChange={(e) =>
+                (store.registerPageStore.repeatedPassword = e.target.value)
+              }
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ marginTop: "20px" }}
+            >
+              Zarejestruj się
+            </Button>
+          </Box>
+        )}
+      </Paper>
+    </Container>
   );
 });
 

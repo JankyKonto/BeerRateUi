@@ -7,6 +7,12 @@ export class RegisterPageStore {
   private _password = "";
   private _repeatedPassword = "";
   private _errorMessage = "";
+  private _isLoading = false;
+
+  private _isUsernameValid = true;
+  private _isEmailValid = true;
+  private _isPasswordValid = true;
+  private _isRepeatedPasswordValid = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -30,18 +36,22 @@ export class RegisterPageStore {
 
   set username(value: string) {
     this._username = value;
+    this._errorMessage = "";
   }
 
   set email(value: string) {
     this._email = value;
+    this._errorMessage = "";
   }
 
   set password(value: string) {
     this._password = value;
+    this._errorMessage = "";
   }
 
   set repeatedPassword(value: string) {
     this._repeatedPassword = value;
+    this._errorMessage = "";
   }
 
   get errorMessage() {
@@ -52,13 +62,21 @@ export class RegisterPageStore {
     return this._password === this._repeatedPassword;
   }
 
+  get isLoading() {
+    return this._isLoading;
+  }
+
+  verifyFields() {}
+
   async register() {
     if (this.username && this.email && this.password && this.passwordsMatch) {
+      this._isLoading = true;
       this._errorMessage = await store.authStore.register(
         this.email,
         this.username,
         this.password
       );
+      this._isLoading = false;
     }
   }
 }
