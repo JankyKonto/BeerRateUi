@@ -9,11 +9,17 @@ import {
 import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
 import RegisterPageSkeleton from "../components/skeletons/RegisterPageSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = observer(() => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const navigateTo = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    store.registerPageStore.register();
+    await store.registerPageStore.register();
+    if (!store.registerPageStore.errorMessage) {
+      navigateTo("/");
+    }
   };
 
   return (
@@ -39,7 +45,7 @@ const RegisterPage = observer(() => {
               }
             />
             <TextField
-              label="Email"
+              label="Adres email"
               type="email"
               variant="outlined"
               fullWidth

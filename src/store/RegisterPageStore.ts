@@ -9,6 +9,11 @@ export class RegisterPageStore {
   private _errorMessage = "";
   private _isLoading = false;
 
+  private _isUsernameValid = true;
+  private _isEmailValid = true;
+  private _isPasswordValid = true;
+  private _isRepeatedPasswordValid = true;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -60,6 +65,8 @@ export class RegisterPageStore {
   get isLoading() {
     return this._isLoading;
   }
+
+  verifyFields() {}
 
   async register() {
     if (this.username && this.email && this.password && this.passwordsMatch) {

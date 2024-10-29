@@ -9,11 +9,17 @@ import {
 import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
 import LoginPageSkeleton from "../components/skeletons/LoginPageSkeleton";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = observer(() => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const navigateTo = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    store.loginPageStore.login();
+    await store.loginPageStore.login();
+    if (!store.loginPageStore.errorMessage) {
+      navigateTo("/");
+    }
   };
 
   return (
@@ -31,7 +37,7 @@ const LoginPage = observer(() => {
           <Box component="form" autoComplete="off" onSubmit={handleSubmit}>
             <div>
               <TextField
-                label="Email"
+                label="Adres email"
                 type="email"
                 variant="outlined"
                 fullWidth
@@ -43,7 +49,7 @@ const LoginPage = observer(() => {
             </div>
             <div>
               <TextField
-                label="Password"
+                label="Hasło"
                 type="password"
                 variant="outlined"
                 fullWidth
@@ -62,14 +68,14 @@ const LoginPage = observer(() => {
               sx={{ marginTop: "20px" }}
               type="submit"
             >
-              Login
+              Zaloguj się
             </Button>
           </Box>
         )}
         <Typography variant="body2" align="center" sx={{ marginTop: "10px" }}>
-          Don't have an account?{" "}
+          Nie masz konta?{" "}
           <a style={{ color: "lightblue" }} href="/register">
-            Sign Up
+            Zarejestruj się
           </a>
         </Typography>
       </Paper>

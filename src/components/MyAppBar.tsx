@@ -34,9 +34,9 @@ const MyAppBar = observer(() => {
   );
 
   const links: AppBarLink[] = [
-    { title: "Szukaj piwa", path: "lista-piw" },
-    { title: "Dodaj piwo", path: "dodaj-piwo" },
-    { title: "Moje oceny", path: "moje-oceny" },
+    { title: "Szukaj piwa", path: "beer-list" },
+    { title: "Dodaj piwo", path: "add-beer" },
+    { title: "Moje oceny", path: "my-grades" },
   ];
 
   return (

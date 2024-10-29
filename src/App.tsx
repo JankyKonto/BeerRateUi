@@ -10,6 +10,7 @@ import {
   CssBaseline,
   ThemeProvider,
 } from "@mui/material";
+import AddBeerPage from "./pages/AddBeerPage";
 
 const App = observer(() => {
   //const [isNavbarExpanded, setIsNavbarExpanded] = useState(false);
@@ -30,6 +31,7 @@ const App = observer(() => {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/add-beer" element={<AddBeerPage />} />
             </Routes>
           </Container>
         </BrowserRouter>
