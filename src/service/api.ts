@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface RegisterResponse {
   username: string;
   errorMessage?: string;
@@ -15,6 +16,10 @@ export interface RemindPasswordResponse {
 }
 
 export interface RevokeResponse {
+  errorMessage?: string;
+}
+
+export interface AddBeerResponse {
   errorMessage?: string;
 }
 
@@ -142,6 +147,38 @@ export class Api {
       return {
         errorMessage: error.message || "Error in fetchRevoke",
       };
+    }
+  }
+
+  async fetchAddBeer(formData: FormData): Promise<AddBeerResponse> {
+    /*
+    try {
+      await this.fetchFromApi<AddBeerResponse>(
+        "Beer/addbeer",
+        "POST",
+        formData
+      );
+      return {};
+    } catch (error: any) {
+      console.error("fetchAddBeer error", error);
+      return {
+        errorMessage: error.message || "Error in fetchAddBeer",
+      };
+    }
+    */
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/Beer/addbeer`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      return {};
+      console.log(response);
+    } catch (error: any) {
+      console.error(error);
+      return {};
     }
   }
 }
