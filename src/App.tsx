@@ -11,6 +11,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import AddBeerPage from "./pages/AddBeerPage";
+import BeerList from "./pages/BeerListPage";
 
 const App = observer(() => {
   //const [isNavbarExpanded, setIsNavbarExpanded] = useState(false);
@@ -32,6 +33,7 @@ const App = observer(() => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/add-beer" element={<AddBeerPage />} />
+              <Route path="/beer-list" element={<BeerList />} />
             </Routes>
           </Container>
         </BrowserRouter>

@@ -1,6 +1,8 @@
 import {
+  Alert,
   Box,
   Button,
+  Collapse,
   Container,
   Paper,
   TextField,
@@ -43,6 +45,18 @@ const AddBeerPage = observer(() => {
           flexWrap: "wrap",
         }}
       >
+        <Collapse
+          in={store.addBeerPageStore.isInfoAlertVisible}
+          sx={{ width: "100%", mb: 2 }}
+        >
+          <Alert color="info">Dodano piwo</Alert>
+        </Collapse>
+        <Collapse
+          in={!!store.addBeerPageStore.errorMessage}
+          sx={{ width: "100%", mb: 2 }}
+        >
+          <Alert color="error">{store.addBeerPageStore.errorMessage}</Alert>
+        </Collapse>
         <Box sx={{ width: "100%", mb: 2 }}>
           <Typography variant="h5" component="h1" gutterBottom align="center">
             Dodaj piwo
@@ -88,14 +102,19 @@ const AddBeerPage = observer(() => {
                 sx={{ mb: 2 }}
               />
               <TextField
+                type="number"
                 fullWidth
                 label="Zawartość alkoholu"
-                value={store.addBeerPageStore.alcoholAmount}
-                onChange={(e) =>
-                  (store.addBeerPageStore.alcoholAmount = Number(
-                    e.target.value
-                  ))
+                value={
+                  store.addBeerPageStore.alcoholAmount !== null
+                    ? store.addBeerPageStore.alcoholAmount
+                    : ""
                 }
+                onChange={(e) => {
+                  const newValue =
+                    e.target.value === "" ? null : Number(e.target.value);
+                  store.addBeerPageStore.alcoholAmount = newValue;
+                }}
                 sx={{ mb: 2 }}
               />
               <TextField
@@ -103,10 +122,16 @@ const AddBeerPage = observer(() => {
                 fullWidth
                 label="IBU"
                 slotProps={{ htmlInput: { step: 0.1 } }}
-                value={store.addBeerPageStore.ibu}
-                onChange={(e) =>
-                  (store.addBeerPageStore.ibu = Number(e.target.value))
+                value={
+                  store.addBeerPageStore.ibu !== null
+                    ? store.addBeerPageStore.ibu
+                    : ""
                 }
+                onChange={(e) => {
+                  const newValue =
+                    e.target.value === "" ? null : Number(e.target.value);
+                  store.addBeerPageStore.ibu = newValue;
+                }}
                 sx={{ mb: 2 }}
               />
             </Box>

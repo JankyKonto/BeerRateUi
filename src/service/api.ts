@@ -1,3 +1,5 @@
+import { Beer } from "../model";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface RegisterResponse {
   username: string;
@@ -11,15 +13,12 @@ export interface LoginResponse {
   errorMessage?: string;
 }
 
-export interface RemindPasswordResponse {
+export interface ErrorResponse {
   errorMessage?: string;
 }
 
-export interface RevokeResponse {
-  errorMessage?: string;
-}
-
-export interface AddBeerResponse {
+export interface BeerListResponse {
+  beers: Beer[];
   errorMessage?: string;
 }
 
@@ -40,6 +39,26 @@ export class Api {
       },
       credentials: "include",
       body: body ? JSON.stringify(body) : null,
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error(data.message || "Fetch error occured");
+    }
+  }
+
+  async fetchFormDataFromApi<T>(
+    path: string,
+    method: FetchMethod,
+    formData: FormData
+  ): Promise<T> {
+    const response = await fetch(`${BACKEND_URL}/${path}`, {
+      method: method,
+      body: formData,
+      credentials: "include",
     });
 
     const data = await response.json();
@@ -119,9 +138,9 @@ export class Api {
     }
   }
 
-  async fetchRemindPassword(email: string): Promise<RemindPasswordResponse> {
+  async fetchRemindPassword(email: string): Promise<ErrorResponse> {
     try {
-      const data = await this.fetchFromApi<RemindPasswordResponse>(
+      const data = await this.fetchFromApi<ErrorResponse>(
         "User/remind-password",
         "POST",
         {
@@ -138,7 +157,7 @@ export class Api {
     }
   }
 
-  async fetchRevoke(): Promise<RevokeResponse> {
+  async fetchRevoke(): Promise<ErrorResponse> {
     try {
       await this.fetchFromApi("User/revoke", "DELETE", {});
       return {};
@@ -150,35 +169,31 @@ export class Api {
     }
   }
 
-  async fetchAddBeer(formData: FormData): Promise<AddBeerResponse> {
-    /*
+  async fetchAddBeer(formData: FormData): Promise<ErrorResponse> {
     try {
-      await this.fetchFromApi<AddBeerResponse>(
-        "Beer/addbeer",
-        "POST",
-        formData
-      );
+      await this.fetchFormDataFromApi(`Beer/addbeer`, "POST", formData);
       return {};
     } catch (error: any) {
-      console.error("fetchAddBeer error", error);
+      console.error(error);
       return {
         errorMessage: error.message || "Error in fetchAddBeer",
       };
     }
-    */
+  }
 
+  async fetchBeerList(): Promise<BeerListResponse> {
     try {
-      const response = await fetch(`${BACKEND_URL}/Beer/addbeer`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
-
-      return {};
-      console.log(response);
+      const data = await this.fetchFromApi<BeerListResponse>(
+        "Beer/getbeers",
+        "GET"
+      );
+      return data;
     } catch (error: any) {
       console.error(error);
-      return {};
+      return {
+        beers: [],
+        errorMessage: error.message || "Error in fetchBeerList",
+      };
     }
   }
 }

@@ -9,6 +9,8 @@ export class AddBeerPageStore {
   private _alcoholAmount: number | null = null;
   private _ibu: number | null = null;
   private _beerImage: File | null = null;
+  private _errorMessage = "";
+  private _isInfoAlertVisible = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,6 +21,7 @@ export class AddBeerPageStore {
   }
 
   set name(value: string) {
+    this._errorMessage = "";
     this._name = value;
   }
 
@@ -27,6 +30,7 @@ export class AddBeerPageStore {
   }
 
   set producer(value: string) {
+    this._errorMessage = "";
     this._producer = value;
   }
 
@@ -35,6 +39,7 @@ export class AddBeerPageStore {
   }
 
   set kind(value: string) {
+    this._errorMessage = "";
     this._kind = value;
   }
 
@@ -43,6 +48,7 @@ export class AddBeerPageStore {
   }
 
   set originCountry(value: string) {
+    this._errorMessage = "";
     this._originCountry = value;
   }
 
@@ -51,6 +57,7 @@ export class AddBeerPageStore {
   }
 
   set alcoholAmount(value: number | null) {
+    this._errorMessage = "";
     this._alcoholAmount = value;
   }
 
@@ -59,6 +66,7 @@ export class AddBeerPageStore {
   }
 
   set ibu(value: number | null) {
+    this._errorMessage = "";
     this._ibu = value;
   }
 
@@ -67,6 +75,7 @@ export class AddBeerPageStore {
   }
 
   set beerImage(value: File | null) {
+    this._errorMessage = "";
     this._beerImage = value;
   }
 
@@ -74,7 +83,16 @@ export class AddBeerPageStore {
     return this._beerImage ? URL.createObjectURL(this._beerImage) : null;
   }
 
+  get errorMessage() {
+    return this._errorMessage;
+  }
+
+  get isInfoAlertVisible() {
+    return this._isInfoAlertVisible;
+  }
+
   async submit() {
+    this._errorMessage = "";
     if (this.ibu && this.beerImage && this.alcoholAmount) {
       const formData = new FormData();
 
@@ -86,7 +104,21 @@ export class AddBeerPageStore {
       formData.append("ibu", this.ibu.toString());
       formData.append("beerImage", this.beerImage);
 
-      await api.fetchAddBeer(formData);
+      const data = await api.fetchAddBeer(formData);
+
+      if (data.errorMessage) {
+        this._errorMessage = data.errorMessage;
+      } else {
+        this.openInfoAlert();
+      }
     }
+  }
+
+  openInfoAlert() {
+    this._isInfoAlertVisible = true;
+
+    setTimeout(() => {
+      this._isInfoAlertVisible = false;
+    }, 5000);
   }
 }
