@@ -101,6 +101,7 @@ const AddBeerPage = observer(() => {
               />
 
               <Autocomplete
+                fullWidth
                 options={BEERS}
                 value={store.addBeerPageStore.kind}
                 onChange={(_, newValue) =>
@@ -114,6 +115,7 @@ const AddBeerPage = observer(() => {
               />
 
               <Autocomplete
+                fullWidth
                 options={COUNTRIES}
                 value={store.addBeerPageStore.originCountry}
                 onChange={(_, newValue) =>

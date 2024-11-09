@@ -10,7 +10,6 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  TextField,
   Toolbar,
   Tooltip,
   Typography,
@@ -108,19 +107,7 @@ const MyAppBar = observer(() => {
             justifyContent: "center",
             mr: 5,
           }}
-        >
-          <TextField
-            variant="outlined"
-            size="small"
-            placeholder="Search..."
-            sx={{
-              resize: "none",
-              mr: 15,
-              borderRadius: "8px",
-              width: 250,
-            }}
-          />
-        </Box>
+        ></Box>
         <Box sx={{ display: "flex", justifyContent: "end", width: "30%" }}>
           {store.authStore.isLoggedIn ? (
             <Box>
