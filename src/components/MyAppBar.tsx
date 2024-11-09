@@ -59,7 +59,7 @@ const MyAppBar = observer(() => {
           </IconButton>
         </Box>
 
-        <Box
+        <Button
           component={NavLink}
           to="/"
           sx={{
@@ -76,11 +76,12 @@ const MyAppBar = observer(() => {
               mr: 2,
               color: "inherit",
               textWrap: "nowrap",
+              textTransform: "none",
             }}
           >
             Beer Rate
           </Typography>
-        </Box>
+        </Button>
         <Box
           sx={{
             display: { xs: "none", sm: "none", md: "flex" },

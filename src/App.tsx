@@ -4,20 +4,28 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MyAppBar from "./components/MyAppBar";
-import {
-  Container,
-  createTheme,
-  CssBaseline,
-  ThemeProvider,
-} from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import AddBeerPage from "./pages/AddBeerPage";
 import BeerList from "./pages/BeerListPage";
 
 const App = observer(() => {
-  //const [isNavbarExpanded, setIsNavbarExpanded] = useState(false);
+  /*
   const theme = createTheme({
     palette: {
-      mode: "dark", // Switch to dark mode
+      mode: "dark",
+    },
+  });
+  */
+
+  const theme = createTheme({
+    palette: {
+      mode: "light", // Light mode for background
+      background: {
+        default: "#f5f5f5", // Light background color
+      },
+      primary: {
+        main: "#B8860B", // Gold color for navbar
+      },
     },
   });
 
@@ -27,15 +35,13 @@ const App = observer(() => {
         <CssBaseline />
         <BrowserRouter>
           <MyAppBar />
-          <Container>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/add-beer" element={<AddBeerPage />} />
-              <Route path="/beer-list" element={<BeerList />} />
-            </Routes>
-          </Container>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/add-beer" element={<AddBeerPage />} />
+            <Route path="/beer-list" element={<BeerList />} />
+          </Routes>
         </BrowserRouter>
       </ThemeProvider>
     </div>

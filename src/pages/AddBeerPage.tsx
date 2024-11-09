@@ -11,6 +11,7 @@ import {
 import { useRef } from "react";
 import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
+import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
 
 const AddBeerPage = observer(() => {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -43,8 +44,14 @@ const AddBeerPage = observer(() => {
           marginTop: "50px",
           display: "flex",
           flexWrap: "wrap",
+          height: "fit-content",
         }}
       >
+        <Box sx={{ width: "100%" }}>
+          <Typography variant="h5" component="h1" gutterBottom align="center">
+            Dodaj piwo
+          </Typography>
+        </Box>
         <Collapse
           in={store.addBeerPageStore.isInfoAlertVisible}
           sx={{ width: "100%", mb: 2 }}
@@ -57,17 +64,12 @@ const AddBeerPage = observer(() => {
         >
           <Alert color="error">{store.addBeerPageStore.errorMessage}</Alert>
         </Collapse>
-        <Box sx={{ width: "100%", mb: 2 }}>
-          <Typography variant="h5" component="h1" gutterBottom align="center">
-            Dodaj piwo
-          </Typography>
-        </Box>
         <Box
           component="form"
           onSubmit={handleSubmit}
           sx={{ display: "flex", flexWrap: "wrap" }}
         >
-          <Box sx={{ display: "flex", height: "50vh", width: "100%" }}>
+          <Box sx={{ display: "flex", width: "100%" }}>
             <Box sx={{ width: "50%" }}>
               <TextField
                 fullWidth
@@ -146,6 +148,7 @@ const AddBeerPage = observer(() => {
             <Box
               sx={{
                 width: "50%",
+                height: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -156,7 +159,9 @@ const AddBeerPage = observer(() => {
                   src={store.addBeerPageStore.previewUrl}
                   style={{ maxWidth: "80%", maxHeight: "80%" }}
                 />
-              ) : null}
+              ) : (
+                <ImageNotSupportedIcon sx={{ width: 25 }} />
+              )}
             </Box>
           </Box>
 
