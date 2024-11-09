@@ -44,7 +44,7 @@ const BeerListPage = observer(() => {
               }}
             >
               <ReactCountryFlag
-                countryCode="PL"
+                countryCode={beer.originCountry}
                 svg
                 style={{ width: "20px", border: "1px solid black" }}
               />

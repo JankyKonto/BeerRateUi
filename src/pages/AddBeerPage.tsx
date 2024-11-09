@@ -1,20 +1,28 @@
 import {
   Alert,
+  Autocomplete,
   Box,
   Button,
   Collapse,
   Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
 import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
+import { BEERS, COUNTRIES } from "../utils/data";
 
 const AddBeerPage = observer(() => {
+  const [searchText, setSearchText] = useState("");
   const imageInputRef = useRef<HTMLInputElement | null>(null);
+  const kindSearchInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleUploadClick = () => {
     if (imageInputRef.current) {
@@ -33,6 +41,10 @@ const AddBeerPage = observer(() => {
     e.preventDefault();
     store.addBeerPageStore.submit();
   };
+
+  const filteredBeers = BEERS.filter((beer) =>
+    beer.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <Container>
@@ -87,22 +99,33 @@ const AddBeerPage = observer(() => {
                 }
                 sx={{ mb: 2 }}
               />
-              <TextField
-                fullWidth
-                label="Gatunek piwa"
+
+              <Autocomplete
+                options={BEERS}
                 value={store.addBeerPageStore.kind}
-                onChange={(e) => (store.addBeerPageStore.kind = e.target.value)}
-                sx={{ mb: 2 }}
-              />
-              <TextField
-                fullWidth
-                label="Kraj pochodzenia"
-                value={store.addBeerPageStore.originCountry}
-                onChange={(e) =>
-                  (store.addBeerPageStore.originCountry = e.target.value)
+                onChange={(_, newValue) =>
+                  (store.addBeerPageStore.kind = newValue ? newValue : "")
                 }
+                renderInput={(params) => (
+                  <TextField {...params} label="Wybierz rodzaj piwa" />
+                )}
+                getOptionLabel={(option) => option}
                 sx={{ mb: 2 }}
               />
+
+              <Autocomplete
+                options={COUNTRIES}
+                value={store.addBeerPageStore.originCountry}
+                onChange={(_, newValue) =>
+                  (store.addBeerPageStore.originCountry = newValue)
+                }
+                renderInput={(params) => (
+                  <TextField {...params} label="Wybierz kraj pochodzenia" />
+                )}
+                getOptionLabel={(option) => option.name_pl}
+                sx={{ mb: 2 }}
+              />
+
               <TextField
                 type="number"
                 fullWidth

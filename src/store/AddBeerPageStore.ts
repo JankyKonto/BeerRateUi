@@ -1,11 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import { api } from "../service/api";
+import { Country } from "../utils/data";
 
 export class AddBeerPageStore {
   private _name = "";
   private _producer = "";
   private _kind = "";
-  private _originCountry = "";
+  private _originCountry: Country | null = null;
   private _alcoholAmount: number | null = null;
   private _ibu: number | null = null;
   private _beerImage: File | null = null;
@@ -43,11 +44,11 @@ export class AddBeerPageStore {
     this._kind = value;
   }
 
-  get originCountry(): string {
+  get originCountry(): Country | null {
     return this._originCountry;
   }
 
-  set originCountry(value: string) {
+  set originCountry(value: Country | null) {
     this._errorMessage = "";
     this._originCountry = value;
   }
@@ -93,13 +94,18 @@ export class AddBeerPageStore {
 
   async submit() {
     this._errorMessage = "";
-    if (this.ibu && this.beerImage && this.alcoholAmount) {
+    if (
+      this.ibu &&
+      this.beerImage &&
+      this.alcoholAmount &&
+      this.originCountry
+    ) {
       const formData = new FormData();
 
       formData.append("name", this.name);
       formData.append("producer", this.producer);
       formData.append("kind", this.kind);
-      formData.append("originCountry", this.originCountry);
+      formData.append("originCountry", this.originCountry.code);
       formData.append("alcoholAmount", this.alcoholAmount.toString());
       formData.append("ibu", this.ibu.toString());
       formData.append("beerImage", this.beerImage);
