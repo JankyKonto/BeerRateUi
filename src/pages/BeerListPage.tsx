@@ -167,7 +167,7 @@ const BeerListPage = observer(() => {
                 svg
                 style={{ width: "20px", border: "1px solid black" }}
               />
-              <Typography variant="h5">{beer.alcoholAmount}%</Typography>
+              <Typography variant="h5">alk. {beer.alcoholAmount}%</Typography>
             </Box>
             <CardMedia
               component="img"

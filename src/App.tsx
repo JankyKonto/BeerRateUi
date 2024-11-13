@@ -7,6 +7,7 @@ import MyAppBar from "./components/MyAppBar";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import AddBeerPage from "./pages/AddBeerPage";
 import BeerList from "./pages/BeerListPage";
+import BeerPage from "./pages/BeerPage";
 
 const App = observer(() => {
   /*
@@ -41,6 +42,7 @@ const App = observer(() => {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/add-beer" element={<AddBeerPage />} />
             <Route path="/beer-list" element={<BeerList />} />
+            <Route path="/beer/:beerId" element={<BeerPage />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

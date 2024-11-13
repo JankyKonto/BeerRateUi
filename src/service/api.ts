@@ -1,4 +1,4 @@
-import { Beer } from "../model";
+import { Beer, Review } from "../model";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface RegisterResponse {
@@ -19,6 +19,28 @@ export interface ErrorResponse {
 
 export interface BeerListResponse {
   beers: Beer[];
+  errorMessage?: string;
+}
+
+export interface BeerResponse {
+  id: number;
+  name: string;
+  producer: string;
+  kind: number;
+  originCountry: string;
+  alcoholAmount: number;
+  ibu: number;
+  image: string;
+  errorMessage?: string;
+}
+
+export interface ReviewCounterResponse {
+  counter: number;
+  errorMessage?: string;
+}
+
+export interface ReviewsListResponse {
+  reviews: Review[];
   errorMessage?: string;
 }
 
@@ -193,6 +215,67 @@ export class Api {
       return {
         beers: [],
         errorMessage: error.message || "Error in fetchBeerList",
+      };
+    }
+  }
+
+  async fetchBeer(beerId: number): Promise<BeerResponse> {
+    try {
+      const data = await this.fetchFromApi<BeerResponse>(
+        `Beer/getbeer/${beerId}`,
+        "GET"
+      );
+      return data;
+    } catch (error: any) {
+      console.error(error);
+      return {
+        id: 0,
+        name: "",
+        alcoholAmount: 0,
+        producer: "",
+        ibu: 0,
+        kind: 0,
+        image: "",
+        originCountry: "",
+        errorMessage: error.message || "Error in fetchBeerList",
+      };
+    }
+  }
+
+  async fetchBeerReviewsCounter(
+    beerId: number
+  ): Promise<ReviewCounterResponse> {
+    try {
+      const data = await this.fetchFromApi<ReviewCounterResponse>(
+        `BeerReview/getbeerreviewscounter/${beerId}`,
+        "GET"
+      );
+      return data;
+    } catch (error: any) {
+      console.error(error);
+      return {
+        counter: 0,
+        errorMessage: error.message || "Error in fetchReviews",
+      };
+    }
+  }
+
+  async fetchBeerReviews(
+    beerId: number,
+    startIndex: number,
+    endIndex: number
+  ): Promise<ReviewsListResponse> {
+    try {
+      const data = await this.fetchFromApi<ReviewsListResponse>(
+        `BeerReview/getbeerreviews/${beerId}?startIndex=${startIndex}&endIndex=${endIndex}`,
+        "GET"
+      );
+      return data;
+    } catch (error: any) {
+      console.error(error);
+      return {
+        reviews: [],
+        errorMessage: error.message || "Error in fetchReviews",
       };
     }
   }
