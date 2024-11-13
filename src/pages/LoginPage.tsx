@@ -10,9 +10,14 @@ import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
 import LoginPageSkeleton from "../components/skeletons/LoginPageSkeleton";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const LoginPage = observer(() => {
   const navigateTo = useNavigate();
+
+  useEffect(() => {
+    store.loginPageStore.reset();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

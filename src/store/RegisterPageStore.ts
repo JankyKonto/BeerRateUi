@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { store } from "./Store";
 
 export class RegisterPageStore {
@@ -9,13 +9,26 @@ export class RegisterPageStore {
   private _errorMessage = "";
   private _isLoading = false;
 
+  /*
   private _isUsernameValid = true;
   private _isEmailValid = true;
   private _isPasswordValid = true;
   private _isRepeatedPasswordValid = true;
+  */
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  reset() {
+    runInAction(() => {
+      this._username = "";
+      this._email = "";
+      this._password = "";
+      this._repeatedPassword = "";
+      this._errorMessage = "";
+      this._isLoading = false;
+    });
   }
 
   get username() {

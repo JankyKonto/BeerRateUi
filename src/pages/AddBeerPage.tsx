@@ -5,24 +5,22 @@ import {
   Button,
   Collapse,
   Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
 import ImageNotSupportedIcon from "@mui/icons-material/ImageNotSupported";
-import { BEERS, COUNTRIES } from "../utils/data";
+import { BEER_KINDS, COUNTRIES } from "../utils/data";
 
 const AddBeerPage = observer(() => {
-  const [searchText, setSearchText] = useState("");
   const imageInputRef = useRef<HTMLInputElement | null>(null);
-  const kindSearchInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    store.addBeerPageStore.reset();
+  }, []);
 
   const handleUploadClick = () => {
     if (imageInputRef.current) {
@@ -41,10 +39,6 @@ const AddBeerPage = observer(() => {
     e.preventDefault();
     store.addBeerPageStore.submit();
   };
-
-  const filteredBeers = BEERS.filter((beer) =>
-    beer.toLowerCase().includes(searchText.toLowerCase())
-  );
 
   return (
     <Container>
@@ -102,15 +96,15 @@ const AddBeerPage = observer(() => {
 
               <Autocomplete
                 fullWidth
-                options={BEERS}
+                options={BEER_KINDS}
                 value={store.addBeerPageStore.kind}
                 onChange={(_, newValue) =>
-                  (store.addBeerPageStore.kind = newValue ? newValue : "")
+                  (store.addBeerPageStore.kind = newValue ? newValue : null)
                 }
                 renderInput={(params) => (
                   <TextField {...params} label="Wybierz rodzaj piwa" />
                 )}
-                getOptionLabel={(option) => option}
+                getOptionLabel={(option) => option.name}
                 sx={{ mb: 2 }}
               />
 

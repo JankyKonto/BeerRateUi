@@ -2,7 +2,7 @@ export interface Beer {
   id: number;
   name: string;
   producer: string;
-  kind: string;
+  kind: number;
   originCountry: string;
   alcoholAmount: number;
   ibu: number;

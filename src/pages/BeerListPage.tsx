@@ -11,15 +11,17 @@ import {
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { store } from "../store/Store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getImageUrl } from "../utils/imageHelpers";
 import ReactCountryFlag from "react-country-flag";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import FactoryIcon from "@mui/icons-material/Factory";
 import SportsBarIcon from "@mui/icons-material/SportsBar";
-import { BEERS, COUNTRIES } from "../utils/data";
+import { BEER_KINDS, COUNTRIES } from "../utils/data";
 
 const BeerListPage = observer(() => {
+  const [test, setTest] = useState("");
+
   useEffect(() => {
     store.beerStore.fetch();
   }, []);
@@ -57,8 +59,8 @@ const BeerListPage = observer(() => {
           <TextField
             fullWidth
             label="Nazwa piwa"
-            value={store.addBeerPageStore.name}
-            onChange={(e) => (store.addBeerPageStore.name = e.target.value)}
+            value={test}
+            onChange={(e) => setTest(e.target.value)}
             sx={{ mb: 2 }}
           />
           <TextField
@@ -71,15 +73,15 @@ const BeerListPage = observer(() => {
 
           <Autocomplete
             fullWidth
-            options={BEERS}
+            options={BEER_KINDS}
             value={store.addBeerPageStore.kind}
             onChange={(_, newValue) =>
-              (store.addBeerPageStore.kind = newValue ? newValue : "")
+              (store.addBeerPageStore.kind = newValue ? newValue : null)
             }
             renderInput={(params) => (
               <TextField {...params} label="Wybierz rodzaj piwa" />
             )}
-            getOptionLabel={(option) => option}
+            getOptionLabel={(option) => option.name}
             sx={{ mb: 2 }}
           />
 
@@ -186,7 +188,7 @@ const BeerListPage = observer(() => {
               </Typography>
               <Typography gutterBottom>
                 <SportsBarIcon sx={{ mr: 1, verticalAlign: "top" }} />
-                {beer.kind}
+                {BEER_KINDS.find((k) => k.id === beer.kind)?.name}
               </Typography>
             </CardContent>
           </Card>

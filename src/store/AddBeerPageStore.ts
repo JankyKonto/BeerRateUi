@@ -1,11 +1,11 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { api } from "../service/api";
-import { Country } from "../utils/data";
+import { BeerKind, Country } from "../utils/data";
 
 export class AddBeerPageStore {
   private _name = "";
   private _producer = "";
-  private _kind = "";
+  private _kind: BeerKind | null = null;
   private _originCountry: Country | null = null;
   private _alcoholAmount: number | null = null;
   private _ibu: number | null = null;
@@ -15,6 +15,20 @@ export class AddBeerPageStore {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  reset() {
+    runInAction(() => {
+      this._name = "";
+      this._producer = "";
+      this._kind = null;
+      this._originCountry = null;
+      this._alcoholAmount = null;
+      this._ibu = null;
+      this._beerImage = null;
+      this._errorMessage = "";
+      this._isInfoAlertVisible = false;
+    });
   }
 
   get name(): string {
@@ -35,11 +49,11 @@ export class AddBeerPageStore {
     this._producer = value;
   }
 
-  get kind(): string {
+  get kind(): BeerKind | null {
     return this._kind;
   }
 
-  set kind(value: string) {
+  set kind(value: BeerKind | null) {
     this._errorMessage = "";
     this._kind = value;
   }
@@ -98,13 +112,14 @@ export class AddBeerPageStore {
       this.ibu &&
       this.beerImage &&
       this.alcoholAmount &&
-      this.originCountry
+      this.originCountry &&
+      this.kind
     ) {
       const formData = new FormData();
 
       formData.append("name", this.name);
       formData.append("producer", this.producer);
-      formData.append("kind", this.kind);
+      formData.append("kind", this.kind.id.toString());
       formData.append("originCountry", this.originCountry.code);
       formData.append("alcoholAmount", this.alcoholAmount.toString());
       formData.append("ibu", this.ibu.toString());

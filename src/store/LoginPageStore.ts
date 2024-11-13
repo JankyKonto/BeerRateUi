@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { store } from "./Store";
 
 export class LoginPageStore {
@@ -11,6 +11,17 @@ export class LoginPageStore {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  reset() {
+    runInAction(() => {
+      this._email = "";
+      this._password = "";
+      this._isResetPasswordModalShown = false;
+      this._resetEmail = "";
+      this._errorMessage = "";
+      this._isLoading = false;
+    });
   }
 
   get email() {

@@ -10,6 +10,7 @@ import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
 import RegisterPageSkeleton from "../components/skeletons/RegisterPageSkeleton";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const RegisterPage = observer(() => {
   const navigateTo = useNavigate();
@@ -21,6 +22,10 @@ const RegisterPage = observer(() => {
       navigateTo("/");
     }
   };
+
+  useEffect(() => {
+    store.registerPageStore.reset();
+  }, []);
 
   return (
     <Container maxWidth="xs">
