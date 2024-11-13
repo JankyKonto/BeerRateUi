@@ -1,4 +1,4 @@
-import { Avatar, Box, Paper, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { store } from "../store/Store";
