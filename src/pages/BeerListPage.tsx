@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Card,
+  CardActionArea,
   CardContent,
   CardMedia,
   Paper,
@@ -18,8 +19,10 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import FactoryIcon from "@mui/icons-material/Factory";
 import SportsBarIcon from "@mui/icons-material/SportsBar";
 import { BEER_KINDS, COUNTRIES } from "../utils/data";
+import { useNavigate } from "react-router-dom";
 
 const BeerListPage = observer(() => {
+  const navigateTo = useNavigate();
   const [test, setTest] = useState("");
 
   useEffect(() => {
@@ -152,45 +155,54 @@ const BeerListPage = observer(() => {
         }}
       >
         {store.beerStore.beers.map((beer, index) => (
-          <Card key={index} sx={{ width: "18%", minWidth: "220px", m: 1 }}>
-            <Box
-              sx={{
-                height: "10%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                px: 2,
-              }}
+          <Card
+            key={index}
+            className="MuiButtonBase-root"
+            sx={{ width: "18%", minWidth: "220px", m: 1 }}
+          >
+            <CardActionArea
+              onClick={() => navigateTo(`/beer/${beer.id}`)}
+              sx={{ height: "100%" }}
             >
-              <ReactCountryFlag
-                countryCode={beer.originCountry}
-                svg
-                style={{ width: "20px", border: "1px solid black" }}
-              />
-              <Typography variant="h5">alk. {beer.alcoholAmount}%</Typography>
-            </Box>
-            <CardMedia
-              component="img"
-              height="300"
-              image={getImageUrl(beer.image)}
-              alt="Zdjęcie piwa"
-            />
-            <CardContent>
-              <Typography variant="h5" component="div">
-                <DriveFileRenameOutlineIcon
-                  sx={{ mr: 1, verticalAlign: "middle" }}
+              <Box
+                sx={{
+                  height: "10%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  px: 2,
+                }}
+              >
+                <ReactCountryFlag
+                  countryCode={beer.originCountry}
+                  svg
+                  style={{ width: "20px", border: "1px solid black" }}
                 />
-                {beer.name}
-              </Typography>
-              <Typography gutterBottom>
-                <FactoryIcon sx={{ mr: 1, verticalAlign: "top" }} />
-                {beer.producer}
-              </Typography>
-              <Typography gutterBottom>
-                <SportsBarIcon sx={{ mr: 1, verticalAlign: "top" }} />
-                {BEER_KINDS.find((k) => k.id === beer.kind)?.name}
-              </Typography>
-            </CardContent>
+                <Typography variant="h5">alk. {beer.alcoholAmount}%</Typography>
+              </Box>
+              <CardMedia
+                component="img"
+                height="300"
+                image={getImageUrl(beer.image)}
+                alt="Zdjęcie piwa"
+              />
+              <CardContent>
+                <Typography variant="h5" component="div">
+                  <DriveFileRenameOutlineIcon
+                    sx={{ mr: 1, verticalAlign: "middle" }}
+                  />
+                  {beer.name}
+                </Typography>
+                <Typography gutterBottom>
+                  <FactoryIcon sx={{ mr: 1, verticalAlign: "top" }} />
+                  {beer.producer}
+                </Typography>
+                <Typography gutterBottom>
+                  <SportsBarIcon sx={{ mr: 1, verticalAlign: "top" }} />
+                  {BEER_KINDS.find((k) => k.id === beer.kind)?.name}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
           </Card>
         ))}
       </Box>
