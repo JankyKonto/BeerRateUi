@@ -1,6 +1,8 @@
 import {
+  Alert,
   Box,
   Button,
+  Collapse,
   Container,
   Paper,
   TextField,
@@ -33,6 +35,9 @@ const RegisterPage = observer(() => {
         <Typography variant="h5" component="h1" gutterBottom align="center">
           Rejestracja
         </Typography>
+        <Collapse in={!!store.registerPageStore.errorMessage}>
+          <Alert color="error">{store.registerPageStore.errorMessage}</Alert>
+        </Collapse>
         {store.registerPageStore.isLoading ? (
           <RegisterPageSkeleton />
         ) : (
@@ -70,6 +75,7 @@ const RegisterPage = observer(() => {
               onChange={(e) =>
                 (store.registerPageStore.password = e.target.value)
               }
+              error={store.registerPageStore.isPasswordInvalid}
             />
             <TextField
               label="Powtórz hasło"
@@ -82,6 +88,7 @@ const RegisterPage = observer(() => {
               onChange={(e) =>
                 (store.registerPageStore.repeatedPassword = e.target.value)
               }
+              error={store.registerPageStore.isPasswordInvalid}
             />
             <Button
               type="submit"

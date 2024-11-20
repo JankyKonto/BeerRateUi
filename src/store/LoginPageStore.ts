@@ -33,10 +33,12 @@ export class LoginPageStore {
   }
 
   set email(value: string) {
+    this._errorMessage = "";
     this._email = value;
   }
 
   set password(value: string) {
+    this._errorMessage = "";
     this._password = value;
   }
 

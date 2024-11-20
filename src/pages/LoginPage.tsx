@@ -1,6 +1,8 @@
 import {
+  Alert,
   Box,
   Button,
+  Collapse,
   Container,
   Paper,
   TextField,
@@ -36,6 +38,9 @@ const LoginPage = observer(() => {
         <Typography variant="h5" component="h1" gutterBottom align="center">
           Login
         </Typography>
+        <Collapse in={!!store.loginPageStore.errorMessage}>
+          <Alert color="error">{store.loginPageStore.errorMessage}</Alert>
+        </Collapse>
         {store.loginPageStore.isLoading ? (
           <LoginPageSkeleton />
         ) : (

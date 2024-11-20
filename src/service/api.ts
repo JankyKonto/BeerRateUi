@@ -34,13 +34,18 @@ export interface BeerResponse {
   errorMessage?: string;
 }
 
-export interface ReviewCounterResponse {
-  counter: number;
+export interface ReviewPagesAmountResponse {
+  pagesAmount: number;
   errorMessage?: string;
 }
 
 export interface ReviewsListResponse {
   reviews: Review[];
+  errorMessage?: string;
+}
+
+export interface PostBeerReviewResponse {
+  username: string;
   errorMessage?: string;
 }
 
@@ -193,7 +198,7 @@ export class Api {
 
   async fetchAddBeer(formData: FormData): Promise<ErrorResponse> {
     try {
-      await this.fetchFormDataFromApi(`Beer/addbeer`, "POST", formData);
+      await this.fetchFormDataFromApi(`Beer/add`, "POST", formData);
       return {};
     } catch (error: any) {
       console.error(error);
@@ -206,7 +211,7 @@ export class Api {
   async fetchBeerList(): Promise<BeerListResponse> {
     try {
       const data = await this.fetchFromApi<BeerListResponse>(
-        "Beer/getbeers",
+        "Beer/beers",
         "GET"
       );
       return data;
@@ -222,7 +227,7 @@ export class Api {
   async fetchBeer(beerId: number): Promise<BeerResponse> {
     try {
       const data = await this.fetchFromApi<BeerResponse>(
-        `Beer/getbeer/${beerId}`,
+        `Beer/${beerId}`,
         "GET"
       );
       return data;
@@ -242,19 +247,19 @@ export class Api {
     }
   }
 
-  async fetchBeerReviewsCounter(
+  async fetchBeerReviewPagesCount(
     beerId: number
-  ): Promise<ReviewCounterResponse> {
+  ): Promise<ReviewPagesAmountResponse> {
     try {
-      const data = await this.fetchFromApi<ReviewCounterResponse>(
-        `BeerReview/getbeerreviewscounter/${beerId}`,
+      const data = await this.fetchFromApi<ReviewPagesAmountResponse>(
+        `BeerReview/pages-amount/${beerId}`,
         "GET"
       );
       return data;
     } catch (error: any) {
       console.error(error);
       return {
-        counter: 0,
+        pagesAmount: 0,
         errorMessage: error.message || "Error in fetchReviews",
       };
     }
@@ -262,12 +267,11 @@ export class Api {
 
   async fetchBeerReviews(
     beerId: number,
-    startIndex: number,
-    endIndex: number
+    page: number
   ): Promise<ReviewsListResponse> {
     try {
       const data = await this.fetchFromApi<ReviewsListResponse>(
-        `BeerReview/getbeerreviews/${beerId}?startIndex=${startIndex}&endIndex=${endIndex}`,
+        `BeerReview/reviews/${beerId}?page=${page}`,
         "GET"
       );
       return data;
@@ -276,6 +280,38 @@ export class Api {
       return {
         reviews: [],
         errorMessage: error.message || "Error in fetchReviews",
+      };
+    }
+  }
+
+  async postBeerReview(
+    beerId: number,
+    text: string,
+    tasteRate: number,
+    aromaRate: number,
+    foamRate: number,
+    colorRate: number
+  ): Promise<PostBeerReviewResponse> {
+    try {
+      const data = await this.fetchFromApi<PostBeerReviewResponse>(
+        "BeerReview/add",
+        "POST",
+        {
+          beerId,
+          text,
+          tasteRate,
+          aromaRate,
+          foamRate,
+          colorRate,
+        }
+      );
+
+      return data;
+    } catch (error: any) {
+      console.error(error);
+      return {
+        username: "",
+        errorMessage: error.message || "postBeerReview error",
       };
     }
   }

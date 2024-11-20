@@ -1,6 +1,9 @@
 import {
   Box,
   Button,
+  FormControl,
+  FormLabel,
+  Pagination,
   Paper,
   Rating,
   TextField,
@@ -10,6 +13,10 @@ import { observer } from "mobx-react-lite";
 import { store } from "../../store/Store";
 
 const ReviewsContainer = observer(() => {
+  const handleChange = (e: React.ChangeEvent<unknown>, value: number) => {
+    store.reviewsStore.currentPage = value;
+  };
+
   return (
     <Paper
       elevation={4}
@@ -18,110 +25,212 @@ const ReviewsContainer = observer(() => {
         flexDirection: "column",
         padding: "20px",
         borderRadius: "10px",
-        marginTop: "50px",
-        width: "47vw",
-        height: "80vh",
+        marginTop: "40px",
+        width: { xs: "94vw", sm: "94vw", md: "47vw" },
+        height: { xs: "fit-content", sm: "fit-content", md: "85vh" },
         mx: 2,
       }}
     >
-      <Typography variant="h4" align="center">
-        Oceny
-      </Typography>
-      <Box
-        sx={{
-          width: "100%",
-          height: "20%",
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        <TextField
-          fullWidth
-          label="Wpisz treść oceny..."
-          value={store.addBeerPageStore.producer}
-          onChange={(e) => (store.addBeerPageStore.producer = e.target.value)}
-          sx={{}}
-        />
+      <Box sx={{ display: "flex", flexDirection: "column", height: "95%" }}>
+        <Typography variant="h4" align="center">
+          Oceny
+        </Typography>
         <Box
           sx={{
             width: "100%",
+            height: "20%",
             display: "flex",
-            justifyContent: "space-between",
+            flexWrap: "wrap",
+            alignItems: "center",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Rating
-              name="simple-controlled"
-              sx={{ mr: 2 }}
-              value={0}
-              onChange={() => {}}
-            />
-            <Rating
-              name="simple-controlled"
-              sx={{ mr: 2 }}
-              value={0}
-              onChange={() => {}}
-            />
-            <Rating
-              name="simple-controlled"
-              sx={{ mr: 2 }}
-              value={0}
-              onChange={() => {}}
-            />
-            <Rating
-              name="simple-controlled"
-              sx={{ mr: 2 }}
-              value={0}
-              onChange={() => {}}
-            />
-            <Rating
-              name="simple-controlled"
-              sx={{ mr: 2 }}
-              value={0}
-              onChange={() => {}}
-            />
-          </Box>
-          <Button fullWidth variant="contained">
-            Wyślij
-          </Button>
-        </Box>
-      </Box>
-      <Box sx={{ width: "100%", height: "80%", overflowY: "auto" }}>
-        {store.reviewsStore.reviews.map((review, index) => (
+          <TextField
+            fullWidth
+            label="Wpisz treść oceny..."
+            value={store.reviewsStore.reviewText}
+            onChange={(e) => (store.reviewsStore.reviewText = e.target.value)}
+          />
           <Box
-            key={index}
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
               width: "100%",
-              textWrap: "wrap",
-              borderRadius: "10px",
-              border: "2px solid #EBB93E",
-              p: 2,
-              my: 1,
+              display: "flex",
+              justifyContent: "space-between",
+              height: "fit-content",
+              mb: 1,
             }}
           >
-            <Typography
-              variant="h4"
-              sx={{ width: "100%", mb: 1, fontWeight: "bold" }}
-            >
-              {review.userName}
-            </Typography>
-            <Typography
-              variant="h6"
+            <Box
               sx={{
-                wordWrap: "break-word",
-                overflowWrap: "break-word",
-                width: "100%",
-                ml: 3,
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+                flexGrow: 1,
+                width: "80%",
+                height: "fit-content",
               }}
             >
-              {review.text}
-            </Typography>
+              <FormControl>
+                <FormLabel>Smak</FormLabel>
+                <Rating
+                  name="simple-controlled"
+                  sx={{ mr: 2 }}
+                  value={store.reviewsStore.selectedTasteRate}
+                  onChange={(e, newValue) => {
+                    store.reviewsStore.selectedTasteRate = newValue;
+                  }}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Zapach</FormLabel>
+                <Rating
+                  name="simple-controlled"
+                  sx={{ mr: 2 }}
+                  value={store.reviewsStore.selectedAromaRate}
+                  onChange={(e, newValue) => {
+                    store.reviewsStore.selectedAromaRate = newValue;
+                  }}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Piana</FormLabel>
+                <Rating
+                  name="simple-controlled"
+                  sx={{ mr: 2 }}
+                  value={store.reviewsStore.selectedFoamRate}
+                  onChange={(e, newValue) => {
+                    store.reviewsStore.selectedFoamRate = newValue;
+                  }}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Barwa</FormLabel>
+                <Rating
+                  name="simple-controlled"
+                  sx={{ mr: 2 }}
+                  value={store.reviewsStore.selectedColorRate}
+                  onChange={(e, newValue) => {
+                    store.reviewsStore.selectedColorRate = newValue;
+                  }}
+                />
+              </FormControl>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "20%",
+                flexShrink: 0,
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={() => store.reviewsStore.postReview()}
+              >
+                Wyślij
+              </Button>
+            </Box>
           </Box>
-        ))}
+        </Box>
+        <Box sx={{ width: "100%", overflowY: "auto" }}>
+          {store.reviewsStore.reviews.map((review, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
+                textWrap: "wrap",
+                borderRadius: "10px",
+                border: "2px solid #EBB93E",
+                p: 2,
+                my: 1,
+                flexShrink: 1,
+              }}
+            >
+              <Box sx={{ display: "flex", width: "100%" }}>
+                <Box sx={{ width: "20%" }}>
+                  <Typography variant="h5" sx={{ mb: 1, fontWeight: "bold" }}>
+                    {review.userName}
+                  </Typography>
+                </Box>
+              </Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  wordWrap: "break-word",
+                  overflowWrap: "break-word",
+                  width: "100%",
+                  ml: 3,
+                }}
+              >
+                {review.text}
+              </Typography>
+
+              <Box
+                sx={{
+                  width: "100%",
+                  mt: 1,
+                  ml: 3,
+                }}
+              >
+                <FormControl>
+                  <FormLabel>Smak</FormLabel>
+                  <Rating
+                    size="small"
+                    sx={{ mr: 4 }}
+                    value={review.tasteRate}
+                    onChange={() => {}}
+                    readOnly
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Zapach</FormLabel>
+                  <Rating
+                    size="small"
+                    sx={{ mr: 4 }}
+                    value={review.aromaRate}
+                    onChange={() => {}}
+                    readOnly
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Piana</FormLabel>
+                  <Rating
+                    size="small"
+                    sx={{ mr: 4 }}
+                    value={review.foamRate}
+                    onChange={() => {}}
+                    readOnly
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Barwa</FormLabel>
+                  <Rating
+                    size="small"
+                    sx={{ mr: 4 }}
+                    value={review.colorRate}
+                    onChange={() => {}}
+                    readOnly
+                  />
+                </FormControl>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          height: "5%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          count={store.reviewsStore.pagesAmount}
+          onChange={handleChange}
+        />
       </Box>
     </Paper>
   );

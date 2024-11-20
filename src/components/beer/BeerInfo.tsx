@@ -18,9 +18,9 @@ const BeerInfo = observer(() => {
         flexDirection: "column",
         padding: "20px",
         borderRadius: "10px",
-        marginTop: "50px",
-        width: "47vw",
-        height: "80vh",
+        marginTop: "40px",
+        width: { xs: "94vw", sm: "94vw", md: "47vw" },
+        height: "85vh",
         mx: 2,
       }}
     >
@@ -118,7 +118,17 @@ const BeerInfo = observer(() => {
             }}
           >
             <SportsBarIcon sx={{ fontSize: "250%", mr: 2 }} />
-            <Typography variant="h5">{store.beerInfoStore.kind}</Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                overflow: "hidden", // Hides the overflowing text
+                textOverflow: "ellipsis", // Adds ellipsis (...) when the text overflows
+                whiteSpace: "nowrap", // Prevents text from wrapping to the next line
+                width: "calc(100% - 50px)", // Adjust width to leave space for the icon
+              }}
+            >
+              {store.beerInfoStore.kind}
+            </Typography>
           </Box>
           <Box
             sx={{

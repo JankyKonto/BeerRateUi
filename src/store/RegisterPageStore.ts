@@ -8,6 +8,7 @@ export class RegisterPageStore {
   private _repeatedPassword = "";
   private _errorMessage = "";
   private _isLoading = false;
+  private _isPasswordInvalid = false;
 
   /*
   private _isUsernameValid = true;
@@ -60,11 +61,13 @@ export class RegisterPageStore {
   set password(value: string) {
     this._password = value;
     this._errorMessage = "";
+    this._isPasswordInvalid = false;
   }
 
   set repeatedPassword(value: string) {
     this._repeatedPassword = value;
     this._errorMessage = "";
+    this._isPasswordInvalid = false;
   }
 
   get errorMessage() {
@@ -79,9 +82,19 @@ export class RegisterPageStore {
     return this._isLoading;
   }
 
+  get isPasswordInvalid() {
+    return this._isPasswordInvalid;
+  }
+
   verifyFields() {}
 
   async register() {
+    if (!this.passwordsMatch) {
+      runInAction(() => {
+        this._isPasswordInvalid = true;
+      });
+    }
+
     if (this.username && this.email && this.password && this.passwordsMatch) {
       this._isLoading = true;
       this._errorMessage = await store.authStore.register(
@@ -89,7 +102,10 @@ export class RegisterPageStore {
         this.username,
         this.password
       );
+      console.log(this._errorMessage);
       this._isLoading = false;
+    } else {
+      this._errorMessage = "Validation failed";
     }
   }
 }

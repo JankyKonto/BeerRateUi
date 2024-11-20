@@ -18,7 +18,13 @@ const BeerPage = observer(() => {
   }, [beerId]);
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: "column", md: "row" },
+        justifyContent: "center",
+      }}
+    >
       <BeerInfo />
       <ReviewsContainer />
     </Box>
