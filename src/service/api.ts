@@ -208,10 +208,10 @@ export class Api {
     }
   }
 
-  async fetchBeerList(): Promise<BeerListResponse> {
+  async fetchBeerList(page: number): Promise<BeerListResponse> {
     try {
       const data = await this.fetchFromApi<BeerListResponse>(
-        "Beer/beers",
+        `Beer/beers?page=${page}`,
         "GET"
       );
       return data;

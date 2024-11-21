@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { store } from "../../store/Store";
+import { formatDateAndTime } from "../../utils/dateHelpers";
 
 const ReviewsContainer = observer(() => {
   const handleChange = (e: React.ChangeEvent<unknown>, value: number) => {
@@ -72,6 +73,7 @@ const ReviewsContainer = observer(() => {
               <FormControl>
                 <FormLabel>Smak</FormLabel>
                 <Rating
+                  precision={0.5}
                   name="simple-controlled"
                   sx={{ mr: 2 }}
                   value={store.reviewsStore.selectedTasteRate}
@@ -83,6 +85,7 @@ const ReviewsContainer = observer(() => {
               <FormControl>
                 <FormLabel>Zapach</FormLabel>
                 <Rating
+                  precision={0.5}
                   name="simple-controlled"
                   sx={{ mr: 2 }}
                   value={store.reviewsStore.selectedAromaRate}
@@ -94,6 +97,7 @@ const ReviewsContainer = observer(() => {
               <FormControl>
                 <FormLabel>Piana</FormLabel>
                 <Rating
+                  precision={0.5}
                   name="simple-controlled"
                   sx={{ mr: 2 }}
                   value={store.reviewsStore.selectedFoamRate}
@@ -105,6 +109,7 @@ const ReviewsContainer = observer(() => {
               <FormControl>
                 <FormLabel>Barwa</FormLabel>
                 <Rating
+                  precision={0.5}
                   name="simple-controlled"
                   sx={{ mr: 2 }}
                   value={store.reviewsStore.selectedColorRate}
@@ -149,12 +154,22 @@ const ReviewsContainer = observer(() => {
                 flexShrink: 1,
               }}
             >
-              <Box sx={{ display: "flex", width: "100%" }}>
-                <Box sx={{ width: "20%" }}>
-                  <Typography variant="h5" sx={{ mb: 1, fontWeight: "bold" }}>
-                    {review.userName}
-                  </Typography>
-                </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{ mb: 1, fontWeight: "bold", width: "fit-content" }}
+                >
+                  {review.userName}
+                </Typography>
+                <Typography>
+                  {formatDateAndTime(new Date(review.createdAt))}
+                </Typography>
               </Box>
               <Typography
                 variant="h6"
@@ -178,40 +193,40 @@ const ReviewsContainer = observer(() => {
                 <FormControl>
                   <FormLabel>Smak</FormLabel>
                   <Rating
+                    precision={0.5}
                     size="small"
                     sx={{ mr: 4 }}
-                    value={review.tasteRate}
-                    onChange={() => {}}
+                    value={review.tasteRate / 2}
                     readOnly
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Zapach</FormLabel>
                   <Rating
+                    precision={0.5}
                     size="small"
                     sx={{ mr: 4 }}
-                    value={review.aromaRate}
-                    onChange={() => {}}
+                    value={review.aromaRate / 2}
                     readOnly
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Piana</FormLabel>
                   <Rating
+                    precision={0.5}
                     size="small"
                     sx={{ mr: 4 }}
-                    value={review.foamRate}
-                    onChange={() => {}}
+                    value={review.foamRate / 2}
                     readOnly
                   />
                 </FormControl>
                 <FormControl>
                   <FormLabel>Barwa</FormLabel>
                   <Rating
+                    precision={0.5}
                     size="small"
                     sx={{ mr: 4 }}
-                    value={review.colorRate}
-                    onChange={() => {}}
+                    value={review.colorRate / 2}
                     readOnly
                   />
                 </FormControl>

@@ -59,6 +59,7 @@ const BeerInfo = observer(() => {
             />
           </Box>
           <Rating
+            precision={0.5}
             name="read-only"
             sx={{ mt: 2 }}
             value={5}

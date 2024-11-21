@@ -19,4 +19,5 @@ export interface Review {
   beerId: number;
   userId: number;
   userName: string;
+  createdAt: string;
 }

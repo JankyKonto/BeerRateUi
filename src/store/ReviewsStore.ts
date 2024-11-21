@@ -24,7 +24,7 @@ export class ReviewsStore {
   }
 
   get selectedTasteRate(): number {
-    return this._selectedTasteRate;
+    return this._selectedTasteRate / 2;
   }
 
   set selectedTasteRate(value: number | null) {
@@ -32,7 +32,7 @@ export class ReviewsStore {
       this._selectedTasteRate = 0;
     } else {
       if (value >= 0 && value <= 5) {
-        this._selectedTasteRate = value;
+        this._selectedTasteRate = value * 2;
       } else {
         throw new Error("Taste rate must be between 0 and 5.");
       }
@@ -40,7 +40,7 @@ export class ReviewsStore {
   }
 
   get selectedAromaRate(): number {
-    return this._selectedAromaRate;
+    return this._selectedAromaRate / 2;
   }
 
   set selectedAromaRate(value: number | null) {
@@ -48,7 +48,7 @@ export class ReviewsStore {
       this._selectedTasteRate = 0;
     } else {
       if (value >= 0 && value <= 5) {
-        this._selectedAromaRate = value;
+        this._selectedAromaRate = value * 2;
       } else {
         throw new Error("Aroma rate must be between 0 and 5.");
       }
@@ -56,7 +56,7 @@ export class ReviewsStore {
   }
 
   get selectedFoamRate(): number {
-    return this._selectedFoamRate;
+    return this._selectedFoamRate / 2;
   }
 
   set selectedFoamRate(value: number | null) {
@@ -64,7 +64,7 @@ export class ReviewsStore {
       this._selectedTasteRate = 0;
     } else {
       if (value >= 0 && value <= 5) {
-        this._selectedFoamRate = value;
+        this._selectedFoamRate = value * 2;
       } else {
         throw new Error("Foam rate must be between 0 and 5.");
       }
@@ -72,7 +72,7 @@ export class ReviewsStore {
   }
 
   get selectedColorRate(): number {
-    return this._selectedColorRate;
+    return this._selectedColorRate / 2;
   }
 
   set selectedColorRate(value: number | null) {
@@ -80,7 +80,7 @@ export class ReviewsStore {
       this._selectedTasteRate = 0;
     } else {
       if (value >= 0 && value <= 5) {
-        this._selectedColorRate = value;
+        this._selectedColorRate = value * 2;
       } else {
         throw new Error("Color rate must be between 0 and 5.");
       }
@@ -140,6 +140,7 @@ export class ReviewsStore {
       if (data.errorMessage) {
         this.errorMessage = data.errorMessage;
       } else {
+        //this.reset();
         await this.fetch(this._beerId);
       }
     }
