@@ -1,4 +1,5 @@
 import { Beer, Review } from "../model";
+import { BeerFilterType } from "../store/BeerListPageStore";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface RegisterResponse {
@@ -19,6 +20,7 @@ export interface ErrorResponse {
 
 export interface BeerListResponse {
   beers: Beer[];
+  pages: number;
   errorMessage?: string;
 }
 
@@ -208,10 +210,23 @@ export class Api {
     }
   }
 
-  async fetchBeerList(page: number): Promise<BeerListResponse> {
+  async fetchBeerList(
+    page: number,
+    filter?: BeerFilterType
+  ): Promise<BeerListResponse> {
+    const filterQuery = filter
+      ? Object.entries(filter)
+          .filter(
+            ([_, value]) =>
+              value !== null && value !== undefined && value !== ""
+          )
+          .map(([key, value]) => `${key}=${value}`)
+          .join("&")
+      : "";
+
     try {
       const data = await this.fetchFromApi<BeerListResponse>(
-        `Beer/beers?page=${page}`,
+        `Beer/beers?page=${page}&${filterQuery}`,
         "GET"
       );
       return data;
@@ -219,6 +234,7 @@ export class Api {
       console.error(error);
       return {
         beers: [],
+        pages: 0,
         errorMessage: error.message || "Error in fetchBeerList",
       };
     }
@@ -314,6 +330,10 @@ export class Api {
         errorMessage: error.message || "postBeerReview error",
       };
     }
+  }
+
+  getBeerImageUrl(beerId: number): string {
+    return `${BACKEND_URL}/Beer/${beerId}/image`;
   }
 }
 

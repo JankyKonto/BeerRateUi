@@ -6,27 +6,32 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Pagination,
   Paper,
+  Select,
+  Slider,
   TextField,
   Typography,
 } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { store } from "../store/Store";
-import { useEffect, useState } from "react";
-import { getImageUrl } from "../utils/imageHelpers";
+import { useEffect } from "react";
 import ReactCountryFlag from "react-country-flag";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import FactoryIcon from "@mui/icons-material/Factory";
 import SportsBarIcon from "@mui/icons-material/SportsBar";
 import { BEER_KINDS, COUNTRIES } from "../utils/data";
 import { useNavigate } from "react-router-dom";
+import { api } from "../service/api";
 
 const BeerListPage = observer(() => {
   const navigateTo = useNavigate();
-  const [test, setTest] = useState("");
 
   useEffect(() => {
-    store.beerStore.fetch();
+    store.beerListPageStore.fetch();
   }, []);
 
   return (
@@ -38,6 +43,7 @@ const BeerListPage = observer(() => {
           width: "20%",
           display: "flex",
           justifyContent: "center",
+          minWidth: "300px",
         }}
       >
         <Paper
@@ -62,24 +68,26 @@ const BeerListPage = observer(() => {
           <TextField
             fullWidth
             label="Nazwa piwa"
-            value={test}
-            onChange={(e) => setTest(e.target.value)}
+            value={store.beerListPageStore.name}
+            onChange={(e) => (store.beerListPageStore.name = e.target.value)}
             sx={{ mb: 2 }}
           />
           <TextField
             fullWidth
             label="Producent piwa"
-            value={store.addBeerPageStore.producer}
-            onChange={(e) => (store.addBeerPageStore.producer = e.target.value)}
+            value={store.beerListPageStore.producer}
+            onChange={(e) =>
+              (store.beerListPageStore.producer = e.target.value)
+            }
             sx={{ mb: 2 }}
           />
 
           <Autocomplete
             fullWidth
             options={BEER_KINDS}
-            value={store.addBeerPageStore.kind}
+            value={store.beerListPageStore.kind}
             onChange={(_, newValue) =>
-              (store.addBeerPageStore.kind = newValue ? newValue : null)
+              (store.beerListPageStore.kind = newValue ? newValue : null)
             }
             renderInput={(params) => (
               <TextField {...params} label="Wybierz rodzaj piwa" />
@@ -91,9 +99,9 @@ const BeerListPage = observer(() => {
           <Autocomplete
             fullWidth
             options={COUNTRIES}
-            value={store.addBeerPageStore.originCountry}
+            value={store.beerListPageStore.originCountry}
             onChange={(_, newValue) =>
-              (store.addBeerPageStore.originCountry = newValue)
+              (store.beerListPageStore.originCountry = newValue)
             }
             renderInput={(params) => (
               <TextField {...params} label="Wybierz kraj pochodzenia" />
@@ -102,44 +110,78 @@ const BeerListPage = observer(() => {
             sx={{ mb: 2 }}
           />
 
-          <TextField
-            type="number"
+          <Box sx={{ width: "100%", px: 1 }}>
+            <Typography gutterBottom>Zawartość alkoholu</Typography>
+            <Slider
+              value={[
+                store.beerListPageStore.filterType.minAlcoholAmount,
+                store.beerListPageStore.filterType.maxAlcoholAmount,
+              ]}
+              onChange={(e, newValue) => {
+                if (Array.isArray(newValue)) {
+                  store.beerListPageStore.filterType.minAlcoholAmount =
+                    newValue[0];
+                  store.beerListPageStore.filterType.maxAlcoholAmount =
+                    newValue[1];
+                }
+              }}
+              valueLabelDisplay="auto"
+            />
+          </Box>
+
+          <Box sx={{ width: "100%", px: 1 }}>
+            <Typography gutterBottom>IBU</Typography>
+            <Slider
+              min={0}
+              max={1000}
+              value={[
+                store.beerListPageStore.filterType.minIbu,
+                store.beerListPageStore.filterType.maxIbu,
+              ]}
+              onChange={(e, newValue) => {
+                if (Array.isArray(newValue)) {
+                  store.beerListPageStore.filterType.minIbu = newValue[0];
+                  store.beerListPageStore.filterType.maxIbu = newValue[1];
+                }
+              }}
+              valueLabelDisplay="auto"
+            />
+          </Box>
+
+          <Select
             fullWidth
-            label="Zawartość alkoholu"
-            value={
-              store.addBeerPageStore.alcoholAmount !== null
-                ? store.addBeerPageStore.alcoholAmount
-                : ""
+            sx={{ my: 1 }}
+            value={store.beerListPageStore.filterType.sortType}
+            onChange={(e) =>
+              (store.beerListPageStore.sortType = Number(e.target.value))
             }
-            onChange={(e) => {
-              const newValue =
-                e.target.value === "" ? null : Number(e.target.value);
-              store.addBeerPageStore.alcoholAmount = newValue;
-            }}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            type="number"
-            fullWidth
-            label="IBU"
-            slotProps={{ htmlInput: { step: 0.1 } }}
-            value={
-              store.addBeerPageStore.ibu !== null
-                ? store.addBeerPageStore.ibu
-                : ""
+          >
+            <MenuItem value={0}>Sortuj po nazwie</MenuItem>
+            <MenuItem value={1}>Sortuj po zawartości alkoholu</MenuItem>
+            <MenuItem value={2}>Sortuj po IBU</MenuItem>
+          </Select>
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={store.beerListPageStore.filterType.isAscending}
+                onChange={(e) => {
+                  store.beerListPageStore.filterType.isAscending =
+                    e.target.checked;
+                }}
+              />
             }
-            onChange={(e) => {
-              const newValue =
-                e.target.value === "" ? null : Number(e.target.value);
-              store.addBeerPageStore.ibu = newValue;
-            }}
-            sx={{ mb: 2 }}
+            label="Sortuj rosnąco"
           />
 
           <Box
             sx={{ width: "100%", display: "flex", justifyContent: "center" }}
           >
-            <Button color="primary" variant="contained">
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => store.beerListPageStore.filter()}
+            >
               Filtruj
             </Button>
           </Box>
@@ -154,7 +196,7 @@ const BeerListPage = observer(() => {
           p: 2,
         }}
       >
-        {store.beerStore.beers.map((beer, index) => (
+        {store.beerListPageStore.beers.map((beer, index) => (
           <Card
             key={index}
             className="MuiButtonBase-root"
@@ -183,7 +225,7 @@ const BeerListPage = observer(() => {
               <CardMedia
                 component="img"
                 height="300"
-                image={getImageUrl(beer.image)}
+                image={api.getBeerImageUrl(beer.id)}
                 alt="Zdjęcie piwa"
               />
               <CardContent>
@@ -205,6 +247,20 @@ const BeerListPage = observer(() => {
             </CardActionArea>
           </Card>
         ))}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            mt: 1,
+          }}
+        >
+          <Pagination
+            page={store.beerListPageStore.page}
+            onChange={(e, value) => (store.beerListPageStore.page = value)}
+            count={store.beerListPageStore.pagesAmount}
+          />
+        </Box>
       </Box>
     </Box>
   );

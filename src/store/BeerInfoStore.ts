@@ -1,6 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { api } from "../service/api";
-import { getImageUrl } from "../utils/imageHelpers";
 import { BEER_KINDS, COUNTRIES } from "../utils/data";
 
 export class BeerInfoStore {
@@ -12,7 +11,12 @@ export class BeerInfoStore {
   private _alcoholAmount = 0;
   private _ibu = 0;
   private _isLoading = false;
-  private _image = "";
+
+  private _avgRate = 8.7;
+  private _avgTasteRate = 10;
+  private _avgFoamRate = 10;
+  private _avgAromaRate = 10;
+  private _avgColorRate = 10;
 
   constructor() {
     makeAutoObservable(this);
@@ -42,16 +46,32 @@ export class BeerInfoStore {
     return this._alcoholAmount;
   }
 
-  get imageUrl() {
-    return getImageUrl(this._image);
-  }
-
   get ibu() {
     return this._ibu;
   }
 
   get isLoading() {
     return this._isLoading;
+  }
+
+  get avgRate() {
+    return this._avgRate / 2;
+  }
+
+  get avgTasteRate() {
+    return this._avgTasteRate / 2;
+  }
+
+  get avgFoamRate() {
+    return this._avgFoamRate / 2;
+  }
+
+  get avgAromaRate() {
+    return this._avgAromaRate / 2;
+  }
+
+  get avgColorRate() {
+    return this._avgColorRate / 2;
   }
 
   async fetch(beerId: number) {
@@ -66,7 +86,6 @@ export class BeerInfoStore {
         this._originCountryCode = data.originCountry;
         this._alcoholAmount = data.alcoholAmount;
         this._ibu = data.ibu;
-        this._image = data.image;
       });
     }
     this._isLoading = false;

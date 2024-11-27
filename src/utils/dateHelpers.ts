@@ -1,14 +1,14 @@
 export const formatDate = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = padToTwoDigits(date.getMonth() + 1);
-  const day = padToTwoDigits(date.getDate());
+  const year = date.getUTCFullYear();
+  const month = padToTwoDigits(date.getUTCMonth() + 1);
+  const day = padToTwoDigits(date.getUTCDate());
 
   return `${day}.${month}.${year}`;
 };
 
 export const formatDateAndTime = (date: Date): string => {
-  const hours = padToTwoDigits(date.getHours());
-  const minutes = padToTwoDigits(date.getMinutes());
+  const hours = padToTwoDigits(date.getUTCHours());
+  const minutes = padToTwoDigits(date.getUTCMinutes());
 
   return `${formatDate(date)} ${hours}:${minutes}`;
 };

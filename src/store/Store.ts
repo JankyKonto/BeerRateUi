@@ -3,16 +3,16 @@ import { AuthStore } from "./AuthStore";
 import { RegisterPageStore } from "./RegisterPageStore";
 import { LoginPageStore } from "./LoginPageStore";
 import { AddBeerPageStore } from "./AddBeerPageStore";
-import { BeerStore } from "./BeerStore";
 import { BeerInfoStore } from "./BeerInfoStore";
 import { ReviewsStore } from "./ReviewsStore";
+import { BeerListPageStore } from "./BeerListPageStore";
 
 export class Store {
   registerPageStore = new RegisterPageStore();
   loginPageStore = new LoginPageStore();
   authStore = new AuthStore();
   addBeerPageStore = new AddBeerPageStore();
-  beerStore = new BeerStore();
+  beerListPageStore = new BeerListPageStore();
   beerInfoStore = new BeerInfoStore();
   reviewsStore = new ReviewsStore();
 

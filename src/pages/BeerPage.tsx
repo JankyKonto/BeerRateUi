@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Alert, Box, Collapse } from "@mui/material";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { store } from "../store/Store";
@@ -18,16 +18,21 @@ const BeerPage = observer(() => {
   }, [beerId]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: { xs: "column", sm: "column", md: "row" },
-        justifyContent: "center",
-      }}
-    >
-      <BeerInfo />
-      <ReviewsContainer />
-    </Box>
+    <>
+      <Collapse in={false} sx={{ mx: 2, my: 2 }}>
+        <Alert color="error">Test error</Alert>
+      </Collapse>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "column", md: "row" },
+          justifyContent: "center",
+        }}
+      >
+        <BeerInfo />
+        <ReviewsContainer />
+      </Box>
+    </>
   );
 });
 

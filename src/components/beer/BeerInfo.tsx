@@ -8,6 +8,7 @@ import PublicIcon from "@mui/icons-material/Public";
 import PercentIcon from "@mui/icons-material/Percent";
 import SpaIcon from "@mui/icons-material/Spa";
 import { observer } from "mobx-react-lite";
+import { api } from "../../service/api";
 
 const BeerInfo = observer(() => {
   return (
@@ -18,7 +19,6 @@ const BeerInfo = observer(() => {
         flexDirection: "column",
         padding: "20px",
         borderRadius: "10px",
-        marginTop: "40px",
         width: { xs: "94vw", sm: "94vw", md: "47vw" },
         height: "85vh",
         mx: 2,
@@ -55,15 +55,14 @@ const BeerInfo = observer(() => {
                 height: "100%",
                 borderRadius: "20px",
               }}
-              src={store.beerInfoStore.imageUrl}
+              src={api.getBeerImageUrl(store.beerInfoStore.id)}
             />
           </Box>
           <Rating
-            precision={0.5}
-            name="read-only"
+            precision={0.01}
             sx={{ mt: 2 }}
-            value={5}
-            onChange={() => {}}
+            value={store.beerInfoStore.avgRate}
+            readOnly
           />
         </Box>
         <Box

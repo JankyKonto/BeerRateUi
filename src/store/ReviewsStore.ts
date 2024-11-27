@@ -19,6 +19,20 @@ export class ReviewsStore {
     makeAutoObservable(this);
   }
 
+  reset() {
+    runInAction(() => {
+      this._beerId = undefined;
+      this._selectedTasteRate = 0;
+      this._selectedAromaRate = 0;
+      this._selectedFoamRate = 0;
+      this._selectedColorRate = 0;
+      this._reviewText = "";
+      this._errorMessage = "";
+      this._pagesAmount = 0;
+      this._currentPage = 1;
+    });
+  }
+
   get reviews() {
     return this._reviews;
   }

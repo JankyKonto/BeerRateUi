@@ -12,11 +12,16 @@ import {
 import { observer } from "mobx-react-lite";
 import { store } from "../../store/Store";
 import { formatDateAndTime } from "../../utils/dateHelpers";
+import { useEffect } from "react";
 
 const ReviewsContainer = observer(() => {
   const handleChange = (e: React.ChangeEvent<unknown>, value: number) => {
     store.reviewsStore.currentPage = value;
   };
+
+  useEffect(() => {
+    store.reviewsStore.reset();
+  }, []);
 
   return (
     <Paper
@@ -26,7 +31,6 @@ const ReviewsContainer = observer(() => {
         flexDirection: "column",
         padding: "20px",
         borderRadius: "10px",
-        marginTop: "40px",
         width: { xs: "94vw", sm: "94vw", md: "47vw" },
         height: { xs: "fit-content", sm: "fit-content", md: "85vh" },
         mx: 2,
