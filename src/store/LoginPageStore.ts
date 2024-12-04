@@ -1,5 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { store } from "./Store";
+import { api } from "../service/api";
 
 export class LoginPageStore {
   private _email = "";
@@ -77,5 +78,22 @@ export class LoginPageStore {
     }
   }
 
-  sendPasswordResetRequest() {}
+  async sendPasswordResetRequest() {
+    const data = await api.fetchRemindPasswordSendEmail(this._resetEmail);
+    if (!data.errorMessage) {
+      runInAction(() => {
+        this._resetEmail = "";
+        this._isResetPasswordModalShown = false;
+      });
+    }
+  }
+
+  async resetPassword(newPassord: string, token: string): Promise<boolean> {
+    const data = await api.fetchRealisePasswordReminding(newPassord, token);
+    if (!data.errorMessage) {
+      return true;
+    }
+
+    return false;
+  }
 }

@@ -374,6 +374,36 @@ export class Api {
     }
   }
 
+  async fetchRemindPasswordSendEmail(email: string): Promise<ErrorResponse> {
+    try {
+      await this.fetchFromApi("User/remind-password-send-email", "POST", {
+        email: email,
+      });
+      return {};
+    } catch (error: any) {
+      return {
+        errorMessage: error.message || "postBeerReview error",
+      };
+    }
+  }
+
+  async fetchRealisePasswordReminding(
+    newPassword: string,
+    token: string
+  ): Promise<ErrorResponse> {
+    try {
+      await this.fetchFromApi("User/realise-password-reminding", "POST", {
+        newPassword: newPassword,
+        token: token,
+      });
+      return {};
+    } catch (error: any) {
+      return {
+        errorMessage: error.message || "postBeerReview error",
+      };
+    }
+  }
+
   getBeerImageUrl(beerId: number): string {
     return `${BACKEND_URL}/Beer/${beerId}/image`;
   }

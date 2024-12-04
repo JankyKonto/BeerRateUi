@@ -4,6 +4,7 @@ import {
   Button,
   Collapse,
   Container,
+  Modal,
   Paper,
   TextField,
   Typography,
@@ -13,6 +14,7 @@ import { observer } from "mobx-react-lite";
 import LoginPageSkeleton from "../components/skeletons/LoginPageSkeleton";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import CenteredModal from "../components/CenteredModal";
 
 const LoginPage = observer(() => {
   const navigateTo = useNavigate();
@@ -88,7 +90,51 @@ const LoginPage = observer(() => {
             Zarejestruj się
           </a>
         </Typography>
+        <Typography variant="body2" align="center" sx={{ marginTop: "10px" }}>
+          Nie pamiętasz hasła?{" "}
+          <a
+            style={{ color: "lightblue" }}
+            onClick={() => {
+              store.loginPageStore.isResetPasswordModalShown = true;
+            }}
+          >
+            Przypomnij
+          </a>
+        </Typography>
       </Paper>
+
+      <CenteredModal
+        open={store.loginPageStore.isResetPasswordModalShown}
+        onClose={() => {
+          store.loginPageStore.isResetPasswordModalShown = false;
+        }}
+      >
+        <Box>
+          <Typography variant="h5" component="h1" gutterBottom align="center">
+            Resetuj hasło
+          </Typography>
+          <TextField
+            label="Podaj swój email"
+            type="email"
+            variant="outlined"
+            fullWidth
+            required
+            sx={{ my: 2 }}
+            value={store.loginPageStore.resetEmail}
+            onChange={(e) => (store.loginPageStore.resetEmail = e.target.value)}
+          />
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ marginTop: "20px" }}
+            onClick={() => store.loginPageStore.sendPasswordResetRequest()}
+          >
+            Zresetuj hasło
+          </Button>
+        </Box>
+      </CenteredModal>
     </Container>
   );
 });

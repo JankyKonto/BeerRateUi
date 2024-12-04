@@ -9,6 +9,7 @@ import AddBeerPage from "./pages/AddBeerPage";
 import BeerList from "./pages/BeerListPage";
 import BeerPage from "./pages/BeerPage";
 import BeerConfirmationPage from "./pages/BeerConfirmationPage";
+import RemindPasswordPage from "./pages/RemindPasswordPage";
 
 const App = observer(() => {
   /*
@@ -45,6 +46,10 @@ const App = observer(() => {
             <Route
               path="beer-confirmation"
               element={<BeerConfirmationPage />}
+            />
+            <Route
+              path="realise-password-reminding/:token"
+              element={<RemindPasswordPage />}
             />
             <Route path="/beer/:beerId" element={<BeerPage />} />
           </Routes>
