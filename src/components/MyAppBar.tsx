@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import SportsBarIcon from "@mui/icons-material/SportsBar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { store } from "../store/Store";
 import MenuIcon from "@mui/icons-material/Menu";
 import { observer } from "mobx-react-lite";
@@ -32,11 +32,18 @@ const MyAppBar = observer(() => {
     null
   );
 
-  const links: AppBarLink[] = [
-    { title: "Szukaj piwa", path: "beer-list" },
-    { title: "Dodaj piwo", path: "add-beer" },
-    { title: "Moje oceny", path: "my-grades" },
-  ];
+  const links: AppBarLink[] = [{ title: "Dodaj piwo", path: "add-beer" }];
+
+  const navigateTo = useNavigate();
+
+  const handleLogout = async (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>
+  ) => {
+    const result = await store.authStore.logout();
+    if (result) {
+      navigateTo("/");
+    }
+  };
 
   return (
     <AppBar position="static">
@@ -98,6 +105,15 @@ const MyAppBar = observer(() => {
               {link.title}
             </Button>
           ))}
+          {store.authStore.isAdmin && (
+            <Button
+              component={NavLink}
+              to={"/beer-confirmation"}
+              sx={{ color: "#fff" }}
+            >
+              Potwierdź piwa
+            </Button>
+          )}
         </Box>
 
         <Box
@@ -127,7 +143,7 @@ const MyAppBar = observer(() => {
                 <MenuItem onClick={() => setUserMenuAnchor(null)}>
                   <Typography sx={{ textAlign: "center" }}>Profil</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => store.authStore.logout()}>
+                <MenuItem onClick={handleLogout}>
                   <Typography sx={{ textAlign: "center" }}>
                     Wyloguj się
                   </Typography>

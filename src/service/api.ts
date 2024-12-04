@@ -11,6 +11,7 @@ export interface LoginResponse {
   id: number;
   username: string;
   email: string;
+  isUserAdmin: boolean;
   errorMessage?: string;
 }
 
@@ -143,6 +144,7 @@ export class Api {
         id: 0,
         username: "",
         email: "",
+        isUserAdmin: false,
         errorMessage: error.message || "Error in fetchLogin",
       };
     }
@@ -162,6 +164,7 @@ export class Api {
         id: 0,
         username: "",
         email: "",
+        isUserAdmin: false,
         errorMessage: error.message || "Error in fetchLogin",
       };
     }
@@ -236,6 +239,45 @@ export class Api {
         beers: [],
         pages: 0,
         errorMessage: error.message || "Error in fetchBeerList",
+      };
+    }
+  }
+
+  async fetchBeerListToConfirm(page: number): Promise<BeerListResponse> {
+    try {
+      const data = await this.fetchFromApi<BeerListResponse>(
+        `Beer/unconfirmed?page=${page}`,
+        "GET"
+      );
+      return data;
+    } catch (error: any) {
+      console.error(error);
+      return {
+        beers: [],
+        pages: 0,
+        errorMessage: error.message || "Error in fetchBeerList",
+      };
+    }
+  }
+
+  async fetchConfirmBeer(beerId: number): Promise<ErrorResponse> {
+    try {
+      await this.fetchFromApi(`Beer/${beerId}/confirm`, "POST", {});
+      return {};
+    } catch (error: any) {
+      return {
+        errorMessage: error.message || "Error in fetchConfirmBeer",
+      };
+    }
+  }
+
+  async fetchDeleteBeer(beerId: number): Promise<ErrorResponse> {
+    try {
+      await this.fetchFromApi(`Beer/${beerId}`, "DELETE", {});
+      return {};
+    } catch (error: any) {
+      return {
+        errorMessage: error.message || "Error in fetchDeleteBeer",
       };
     }
   }

@@ -154,8 +154,8 @@ export class ReviewsStore {
       if (data.errorMessage) {
         this.errorMessage = data.errorMessage;
       } else {
-        //this.reset();
         await this.fetch(this._beerId);
+        this.reset();
       }
     }
   }

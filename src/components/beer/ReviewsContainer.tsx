@@ -40,107 +40,110 @@ const ReviewsContainer = observer(() => {
         <Typography variant="h4" align="center">
           Oceny
         </Typography>
-        <Box
-          sx={{
-            width: "100%",
-            height: "20%",
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
-          <TextField
-            fullWidth
-            label="Wpisz treść oceny..."
-            value={store.reviewsStore.reviewText}
-            onChange={(e) => (store.reviewsStore.reviewText = e.target.value)}
-          />
+
+        {store.authStore.isLoggedIn && (
           <Box
             sx={{
               width: "100%",
+              height: "20%",
               display: "flex",
-              justifyContent: "space-between",
-              height: "fit-content",
-              mb: 1,
+              flexWrap: "wrap",
+              alignItems: "center",
             }}
           >
+            <TextField
+              fullWidth
+              label="Wpisz treść oceny..."
+              value={store.reviewsStore.reviewText}
+              onChange={(e) => (store.reviewsStore.reviewText = e.target.value)}
+            />
             <Box
               sx={{
+                width: "100%",
                 display: "flex",
-                alignItems: "center",
-                flexWrap: "wrap",
-                flexGrow: 1,
-                width: "80%",
+                justifyContent: "space-between",
                 height: "fit-content",
+                mb: 1,
               }}
             >
-              <FormControl>
-                <FormLabel>Smak</FormLabel>
-                <Rating
-                  precision={0.5}
-                  name="simple-controlled"
-                  sx={{ mr: 2 }}
-                  value={store.reviewsStore.selectedTasteRate}
-                  onChange={(e, newValue) => {
-                    store.reviewsStore.selectedTasteRate = newValue;
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Zapach</FormLabel>
-                <Rating
-                  precision={0.5}
-                  name="simple-controlled"
-                  sx={{ mr: 2 }}
-                  value={store.reviewsStore.selectedAromaRate}
-                  onChange={(e, newValue) => {
-                    store.reviewsStore.selectedAromaRate = newValue;
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Piana</FormLabel>
-                <Rating
-                  precision={0.5}
-                  name="simple-controlled"
-                  sx={{ mr: 2 }}
-                  value={store.reviewsStore.selectedFoamRate}
-                  onChange={(e, newValue) => {
-                    store.reviewsStore.selectedFoamRate = newValue;
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Barwa</FormLabel>
-                <Rating
-                  precision={0.5}
-                  name="simple-controlled"
-                  sx={{ mr: 2 }}
-                  value={store.reviewsStore.selectedColorRate}
-                  onChange={(e, newValue) => {
-                    store.reviewsStore.selectedColorRate = newValue;
-                  }}
-                />
-              </FormControl>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "20%",
-                flexShrink: 0,
-              }}
-            >
-              <Button
-                variant="contained"
-                onClick={() => store.reviewsStore.postReview()}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  flexGrow: 1,
+                  width: "80%",
+                  height: "fit-content",
+                }}
               >
-                Wyślij
-              </Button>
+                <FormControl>
+                  <FormLabel>Smak</FormLabel>
+                  <Rating
+                    precision={0.5}
+                    name="simple-controlled"
+                    sx={{ mr: 2 }}
+                    value={store.reviewsStore.selectedTasteRate}
+                    onChange={(e, newValue) => {
+                      store.reviewsStore.selectedTasteRate = newValue;
+                    }}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Zapach</FormLabel>
+                  <Rating
+                    precision={0.5}
+                    name="simple-controlled"
+                    sx={{ mr: 2 }}
+                    value={store.reviewsStore.selectedAromaRate}
+                    onChange={(e, newValue) => {
+                      store.reviewsStore.selectedAromaRate = newValue;
+                    }}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Piana</FormLabel>
+                  <Rating
+                    precision={0.5}
+                    name="simple-controlled"
+                    sx={{ mr: 2 }}
+                    value={store.reviewsStore.selectedFoamRate}
+                    onChange={(e, newValue) => {
+                      store.reviewsStore.selectedFoamRate = newValue;
+                    }}
+                  />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Barwa</FormLabel>
+                  <Rating
+                    precision={0.5}
+                    name="simple-controlled"
+                    sx={{ mr: 2 }}
+                    value={store.reviewsStore.selectedColorRate}
+                    onChange={(e, newValue) => {
+                      store.reviewsStore.selectedColorRate = newValue;
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "20%",
+                  flexShrink: 0,
+                }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => store.reviewsStore.postReview()}
+                >
+                  Wyślij
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        )}
         <Box sx={{ width: "100%", overflowY: "auto" }}>
           {store.reviewsStore.reviews.map((review, index) => (
             <Box

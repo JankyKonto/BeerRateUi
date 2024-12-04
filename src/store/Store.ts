@@ -6,6 +6,7 @@ import { AddBeerPageStore } from "./AddBeerPageStore";
 import { BeerInfoStore } from "./BeerInfoStore";
 import { ReviewsStore } from "./ReviewsStore";
 import { BeerListPageStore } from "./BeerListPageStore";
+import { BeerConfirmationPageStore } from "./BeerConfirmationPageStore";
 
 export class Store {
   registerPageStore = new RegisterPageStore();
@@ -15,6 +16,7 @@ export class Store {
   beerListPageStore = new BeerListPageStore();
   beerInfoStore = new BeerInfoStore();
   reviewsStore = new ReviewsStore();
+  beerConfirmationPageStore = new BeerConfirmationPageStore();
 
   constructor() {
     makeAutoObservable(this);

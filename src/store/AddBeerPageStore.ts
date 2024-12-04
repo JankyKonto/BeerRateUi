@@ -27,7 +27,6 @@ export class AddBeerPageStore {
       this._ibu = null;
       this._beerImage = null;
       this._errorMessage = "";
-      this._isInfoAlertVisible = false;
     });
   }
 
@@ -109,12 +108,13 @@ export class AddBeerPageStore {
   async submit() {
     this._errorMessage = "";
     if (
-      this.ibu &&
+      this.ibu !== null &&
       this.beerImage &&
-      this.alcoholAmount &&
+      this.alcoholAmount !== null &&
       this.originCountry &&
-      this.kind
+      this.kind !== null
     ) {
+      console.log("janky");
       const formData = new FormData();
 
       formData.append("name", this.name);
@@ -131,7 +131,10 @@ export class AddBeerPageStore {
         this._errorMessage = data.errorMessage;
       } else {
         this.openInfoAlert();
+        this.reset();
       }
+    } else {
+      this._errorMessage = "Wrong data validation";
     }
   }
 

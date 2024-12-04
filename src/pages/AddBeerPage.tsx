@@ -176,7 +176,7 @@ const AddBeerPage = observer(() => {
               {store.addBeerPageStore.previewUrl ? (
                 <img
                   src={store.addBeerPageStore.previewUrl}
-                  style={{ maxWidth: "80%", maxHeight: "80%" }}
+                  style={{ height: "300px" }}
                 />
               ) : (
                 <ImageNotSupportedIcon sx={{ width: 25 }} />

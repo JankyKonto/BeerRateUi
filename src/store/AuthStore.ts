@@ -1,10 +1,11 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { api, LoginResponse, RegisterResponse } from "../service/api";
 
 export class AuthStore {
   private _userId = 0;
   private _username = "";
   private _email = "";
+  private _isAdmin = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -39,6 +40,10 @@ export class AuthStore {
     return !!(this.userId && this.username && this.email);
   }
 
+  get isAdmin() {
+    return this._isAdmin;
+  }
+
   async register(
     email: string,
     username: string,
@@ -67,7 +72,9 @@ export class AuthStore {
       this.userId = data.id;
       this.email = data.email;
       this.username = data.username;
-
+      runInAction(() => {
+        this._isAdmin = data.isUserAdmin;
+      });
       return "";
     }
   }
@@ -82,17 +89,23 @@ export class AuthStore {
       this.email = data.email;
       this.userId = data.id;
       this.username = data.username;
+      runInAction(() => {
+        this._isAdmin = data.isUserAdmin;
+      });
       return "";
     }
   }
 
-  async logout() {
+  async logout(): Promise<boolean> {
     const data = await api.fetchRevoke();
     console.log(data);
     if (!data.errorMessage) {
       this.userId = 0;
       this.username = "";
       this.email = "";
+      return true;
     }
+
+    return false;
   }
 }
