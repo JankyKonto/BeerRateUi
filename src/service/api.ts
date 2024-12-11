@@ -25,6 +25,11 @@ export interface BeerListResponse {
   errorMessage?: string;
 }
 
+export interface SimilarBeerListResponse {
+  beers: Beer[];
+  errorMessage?: string;
+}
+
 export interface BeerResponse {
   id: number;
   name: string;
@@ -100,7 +105,7 @@ export class Api {
     }
   }
 
-  async fetchRegister(
+  async postRegister(
     username: string,
     email: string,
     password: string
@@ -126,7 +131,7 @@ export class Api {
     }
   }
 
-  async fetchLogin(email: string, password: string): Promise<LoginResponse> {
+  async postLogin(email: string, password: string): Promise<LoginResponse> {
     try {
       const data = await this.fetchFromApi<LoginResponse>(
         "User/login",
@@ -150,7 +155,7 @@ export class Api {
     }
   }
 
-  async fetchRefresh(): Promise<LoginResponse> {
+  async postRefresh(): Promise<LoginResponse> {
     try {
       const data = await this.fetchFromApi<LoginResponse>(
         "User/refresh",
@@ -170,7 +175,7 @@ export class Api {
     }
   }
 
-  async fetchRemindPassword(email: string): Promise<ErrorResponse> {
+  async postRemindPassword(email: string): Promise<ErrorResponse> {
     try {
       const data = await this.fetchFromApi<ErrorResponse>(
         "User/remind-password",
@@ -189,7 +194,7 @@ export class Api {
     }
   }
 
-  async fetchRevoke(): Promise<ErrorResponse> {
+  async deleteRevoke(): Promise<ErrorResponse> {
     try {
       await this.fetchFromApi("User/revoke", "DELETE", {});
       return {};
@@ -201,7 +206,7 @@ export class Api {
     }
   }
 
-  async fetchAddBeer(formData: FormData): Promise<ErrorResponse> {
+  async postAddBeer(formData: FormData): Promise<ErrorResponse> {
     try {
       await this.fetchFormDataFromApi(`Beer/add`, "POST", formData);
       return {};
@@ -213,7 +218,7 @@ export class Api {
     }
   }
 
-  async fetchBeerList(
+  async getBeerList(
     page: number,
     filter?: BeerFilterType
   ): Promise<BeerListResponse> {
@@ -243,7 +248,7 @@ export class Api {
     }
   }
 
-  async fetchBeerListToConfirm(page: number): Promise<BeerListResponse> {
+  async getBeerListToConfirm(page: number): Promise<BeerListResponse> {
     try {
       const data = await this.fetchFromApi<BeerListResponse>(
         `Beer/unconfirmed?page=${page}`,
@@ -260,7 +265,7 @@ export class Api {
     }
   }
 
-  async fetchConfirmBeer(beerId: number): Promise<ErrorResponse> {
+  async postConfirmBeer(beerId: number): Promise<ErrorResponse> {
     try {
       await this.fetchFromApi(`Beer/${beerId}/confirm`, "POST", {});
       return {};
@@ -271,7 +276,7 @@ export class Api {
     }
   }
 
-  async fetchDeleteBeer(beerId: number): Promise<ErrorResponse> {
+  async deleteBeer(beerId: number): Promise<ErrorResponse> {
     try {
       await this.fetchFromApi(`Beer/${beerId}`, "DELETE", {});
       return {};
@@ -282,7 +287,7 @@ export class Api {
     }
   }
 
-  async fetchBeer(beerId: number): Promise<BeerResponse> {
+  async getBeer(beerId: number): Promise<BeerResponse> {
     try {
       const data = await this.fetchFromApi<BeerResponse>(
         `Beer/${beerId}`,
@@ -305,7 +310,7 @@ export class Api {
     }
   }
 
-  async fetchBeerReviewPagesCount(
+  async getBeerReviewPagesCount(
     beerId: number
   ): Promise<ReviewPagesAmountResponse> {
     try {
@@ -323,7 +328,7 @@ export class Api {
     }
   }
 
-  async fetchBeerReviews(
+  async getBeerReviews(
     beerId: number,
     page: number
   ): Promise<ReviewsListResponse> {
@@ -374,7 +379,7 @@ export class Api {
     }
   }
 
-  async fetchRemindPasswordSendEmail(email: string): Promise<ErrorResponse> {
+  async postRemindPasswordSendEmail(email: string): Promise<ErrorResponse> {
     try {
       await this.fetchFromApi("User/remind-password-send-email", "POST", {
         email: email,
@@ -382,12 +387,12 @@ export class Api {
       return {};
     } catch (error: any) {
       return {
-        errorMessage: error.message || "postBeerReview error",
+        errorMessage: error.message || "postRemindPasswordSendEmail error",
       };
     }
   }
 
-  async fetchRealisePasswordReminding(
+  async postRealisePasswordReminding(
     newPassword: string,
     token: string
   ): Promise<ErrorResponse> {
@@ -399,7 +404,22 @@ export class Api {
       return {};
     } catch (error: any) {
       return {
-        errorMessage: error.message || "postBeerReview error",
+        errorMessage: error.message || "postRealisePasswordReminding error",
+      };
+    }
+  }
+
+  async getSimilarBeers(beerId: number): Promise<SimilarBeerListResponse> {
+    try {
+      const data = await this.fetchFromApi<SimilarBeerListResponse>(
+        `Beer/${beerId}/similar-beers`,
+        "GET"
+      );
+      return data;
+    } catch (error: any) {
+      return {
+        beers: [],
+        errorMessage: error.message || "getSimilarBeers error",
       };
     }
   }

@@ -76,7 +76,7 @@ export class BeerInfoStore {
 
   async fetch(beerId: number) {
     this._isLoading = true;
-    const data = await api.fetchBeer(beerId);
+    const data = await api.getBeer(beerId);
     if (!data.errorMessage) {
       runInAction(() => {
         this._id = data.id;

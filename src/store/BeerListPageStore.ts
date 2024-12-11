@@ -124,7 +124,7 @@ export class BeerListPageStore {
   }
 
   async fetch() {
-    const data = await api.fetchBeerList(this._page, this._filterType);
+    const data = await api.getBeerList(this._page, this._filterType);
 
     runInAction(() => {
       if (!data.errorMessage) {

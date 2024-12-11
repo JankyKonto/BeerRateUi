@@ -129,8 +129,8 @@ export class ReviewsStore {
   }
 
   async fetch(beerId: number) {
-    const data = await api.fetchBeerReviews(beerId, this._currentPage);
-    const pagesCountData = await api.fetchBeerReviewPagesCount(beerId);
+    const data = await api.getBeerReviews(beerId, this._currentPage);
+    const pagesCountData = await api.getBeerReviewPagesCount(beerId);
     if (!data.errorMessage && !pagesCountData.errorMessage) {
       runInAction(() => {
         this._beerId = beerId;

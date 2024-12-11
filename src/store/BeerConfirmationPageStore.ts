@@ -29,7 +29,7 @@ export class BeerConfirmationPageStore {
   }
 
   async fetch() {
-    const data = await api.fetchBeerListToConfirm(this._page);
+    const data = await api.getBeerListToConfirm(this._page);
     if (!data.errorMessage) {
       runInAction(() => {
         this._beers = data.beers;
@@ -39,7 +39,7 @@ export class BeerConfirmationPageStore {
   }
 
   async confirm(beerId: number) {
-    const data = await api.fetchConfirmBeer(beerId);
+    const data = await api.postConfirmBeer(beerId);
     if (!data.errorMessage) {
       if (this.beers.length === 1) {
         runInAction(() => {
@@ -51,7 +51,7 @@ export class BeerConfirmationPageStore {
   }
 
   async reject(beerId: number) {
-    const data = await api.fetchDeleteBeer(beerId);
+    const data = await api.deleteBeer(beerId);
     if (!data.errorMessage) {
       if (this.beers.length === 1) {
         runInAction(() => {

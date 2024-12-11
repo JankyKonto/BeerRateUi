@@ -125,7 +125,7 @@ export class AddBeerPageStore {
       formData.append("ibu", this.ibu.toString());
       formData.append("beerImage", this.beerImage);
 
-      const data = await api.fetchAddBeer(formData);
+      const data = await api.postAddBeer(formData);
 
       if (data.errorMessage) {
         this._errorMessage = data.errorMessage;

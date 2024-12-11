@@ -15,7 +15,7 @@ export class BeerStore {
   }
 
   async fetch() {
-    const data = await api.fetchBeerList(1);
+    const data = await api.getBeerList(1);
 
     if (!data.errorMessage) {
       this._beers = data.beers;

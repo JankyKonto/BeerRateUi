@@ -4,7 +4,6 @@ import {
   Button,
   Collapse,
   Container,
-  Modal,
   Paper,
   TextField,
   Typography,

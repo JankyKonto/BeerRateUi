@@ -79,7 +79,7 @@ export class LoginPageStore {
   }
 
   async sendPasswordResetRequest() {
-    const data = await api.fetchRemindPasswordSendEmail(this._resetEmail);
+    const data = await api.postRemindPasswordSendEmail(this._resetEmail);
     if (!data.errorMessage) {
       runInAction(() => {
         this._resetEmail = "";
@@ -89,7 +89,7 @@ export class LoginPageStore {
   }
 
   async resetPassword(newPassord: string, token: string): Promise<boolean> {
-    const data = await api.fetchRealisePasswordReminding(newPassord, token);
+    const data = await api.postRealisePasswordReminding(newPassord, token);
     if (!data.errorMessage) {
       return true;
     }

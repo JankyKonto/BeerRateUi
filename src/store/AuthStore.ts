@@ -49,7 +49,7 @@ export class AuthStore {
     username: string,
     password: string
   ): Promise<string> {
-    const data: RegisterResponse = await api.fetchRegister(
+    const data: RegisterResponse = await api.postRegister(
       username,
       email,
       password
@@ -63,7 +63,7 @@ export class AuthStore {
   }
 
   async login(email: string, password: string): Promise<string> {
-    const data: LoginResponse = await api.fetchLogin(email, password);
+    const data: LoginResponse = await api.postLogin(email, password);
 
     if (data.errorMessage) {
       console.error("Login error", data.errorMessage);
@@ -80,7 +80,7 @@ export class AuthStore {
   }
 
   async refresh(): Promise<string> {
-    const data = await api.fetchRefresh();
+    const data = await api.postRefresh();
 
     if (data.errorMessage) {
       console.error("Login error", data.errorMessage);
@@ -97,7 +97,7 @@ export class AuthStore {
   }
 
   async logout(): Promise<boolean> {
-    const data = await api.fetchRevoke();
+    const data = await api.deleteRevoke();
     console.log(data);
     if (!data.errorMessage) {
       this.userId = 0;
