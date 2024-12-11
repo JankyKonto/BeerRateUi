@@ -94,6 +94,7 @@ const FilterBox = observer(() => {
               store.beerListPageStore.filterType.minAlcoholAmount,
               store.beerListPageStore.filterType.maxAlcoholAmount,
             ]}
+            max={20}
             onChange={(_, newValue) => {
               if (Array.isArray(newValue)) {
                 store.beerListPageStore.filterType.minAlcoholAmount =
@@ -110,7 +111,7 @@ const FilterBox = observer(() => {
           <Typography gutterBottom>IBU</Typography>
           <Slider
             min={0}
-            max={1000}
+            max={120}
             value={[
               store.beerListPageStore.filterType.minIbu,
               store.beerListPageStore.filterType.maxIbu,

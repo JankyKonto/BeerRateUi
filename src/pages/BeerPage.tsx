@@ -5,6 +5,7 @@ import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
 import BeerInfo from "../components/beer/BeerInfo";
 import ReviewsContainer from "../components/beer/ReviewsContainer";
+import SimilarBeers from "../components/beer/SimilarBeers";
 
 const BeerPage = observer(() => {
   const { beerId } = useParams();
@@ -14,23 +15,28 @@ const BeerPage = observer(() => {
       const numberId = parseInt(beerId);
       store.beerInfoStore.fetch(numberId);
       store.reviewsStore.fetch(numberId);
+      store.beerInfoStore.fetchSimilarBeers(numberId);
     }
   }, [beerId]);
 
   return (
     <>
-      <Collapse in={false} sx={{ mx: 2, my: 2 }}>
-        <Alert color="error">Test error</Alert>
-      </Collapse>
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "column", md: "row" },
+          flexWrap: "wrap",
           justifyContent: "center",
+          mt: 3,
         }}
       >
-        <BeerInfo />
-        <ReviewsContainer />
+        <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+          <BeerInfo />
+          <ReviewsContainer />
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+          <SimilarBeers />
+        </Box>
       </Box>
     </>
   );

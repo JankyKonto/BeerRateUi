@@ -59,7 +59,7 @@ const BeerList: React.FC<Props> = observer(
           >
             <CardActionArea
               onClick={() => navigateTo(`/beer/${beer.id}`)}
-              sx={{ flex: 1 }}
+              sx={{ flex: 1, bgcolor: "#F1F1F1" }}
             >
               <Box
                 sx={{
@@ -73,7 +73,7 @@ const BeerList: React.FC<Props> = observer(
                 <ReactCountryFlag
                   countryCode={beer.originCountry}
                   svg
-                  style={{ width: "20px", border: "1px solid black" }}
+                  style={{ width: "20px" }}
                 />
                 <Typography variant="h5">alk. {beer.alcoholAmount}%</Typography>
               </Box>

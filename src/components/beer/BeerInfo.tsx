@@ -1,4 +1,13 @@
-import { Avatar, Box, Paper, Rating, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  FormControl,
+  FormLabel,
+  Paper,
+  Popover,
+  Rating,
+  Typography,
+} from "@mui/material";
 import { store } from "../../store/Store";
 
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
@@ -9,8 +18,36 @@ import PercentIcon from "@mui/icons-material/Percent";
 import SpaIcon from "@mui/icons-material/Spa";
 import { observer } from "mobx-react-lite";
 import { api } from "../../service/api";
+import { useEffect, useRef, useState } from "react";
 
 const BeerInfo = observer(() => {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [popoverAnchor, setPopoverAnchor] = useState<HTMLDivElement | null>(
+    null
+  );
+  const ratingRef = useRef<HTMLDivElement | null>(null);
+
+  const handlePopoverOpen = () => {
+    setIsPopoverOpen(true);
+    if (ratingRef.current) {
+      setPopoverAnchor(ratingRef.current);
+    }
+  };
+
+  const handlePopoverClose = () => {
+    setIsPopoverOpen(false);
+    setPopoverAnchor(null);
+  };
+
+  /*
+  useEffect(() => {
+    // This ensures that the Popover opens only after the DOM element is available
+    if (ratingRef.current) {
+      setPopoverAnchor(ratingRef.current);
+    }
+  }, []);
+  */
+
   return (
     <Paper
       elevation={4}
@@ -20,7 +57,7 @@ const BeerInfo = observer(() => {
         padding: "20px",
         borderRadius: "10px",
         width: { xs: "94vw", sm: "94vw", md: "47vw" },
-        height: "85vh",
+        height: "65vh",
         mx: 2,
       }}
     >
@@ -58,12 +95,14 @@ const BeerInfo = observer(() => {
               src={api.getBeerImageUrl(store.beerInfoStore.id)}
             />
           </Box>
-          <Rating
-            precision={0.01}
-            sx={{ mt: 2 }}
-            value={store.beerInfoStore.avgRate}
-            readOnly
-          />
+          <div onClick={() => handlePopoverOpen()}>
+            <Rating
+              precision={0.01}
+              sx={{ mt: 2 }}
+              value={store.beerInfoStore.avgRate}
+              readOnly
+            />
+          </div>
         </Box>
         <Box
           sx={{
@@ -121,10 +160,10 @@ const BeerInfo = observer(() => {
             <Typography
               variant="h5"
               sx={{
-                overflow: "hidden", // Hides the overflowing text
-                textOverflow: "ellipsis", // Adds ellipsis (...) when the text overflows
-                whiteSpace: "nowrap", // Prevents text from wrapping to the next line
-                width: "calc(100% - 50px)", // Adjust width to leave space for the icon
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                width: "calc(100% - 50px)",
               }}
             >
               {store.beerInfoStore.kind}
@@ -181,6 +220,54 @@ const BeerInfo = observer(() => {
           </Box>
         </Box>
       </Box>
+      <Popover
+        open={isPopoverOpen}
+        anchorEl={popoverAnchor}
+        onClose={handlePopoverClose}
+      >
+        <Box>
+          <FormControl>
+            <FormLabel>Smak</FormLabel>
+            <Rating
+              precision={0.01}
+              sx={{ mt: 2 }}
+              value={store.beerInfoStore.avgRate}
+              readOnly
+              ref={ratingRef}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Zapach</FormLabel>
+            <Rating
+              precision={0.01}
+              sx={{ mt: 2 }}
+              value={store.beerInfoStore.avgRate}
+              readOnly
+              ref={ratingRef}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Piana</FormLabel>
+            <Rating
+              precision={0.01}
+              sx={{ mt: 2 }}
+              value={store.beerInfoStore.avgRate}
+              readOnly
+              ref={ratingRef}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Barwa</FormLabel>
+            <Rating
+              precision={0.01}
+              sx={{ mt: 2 }}
+              value={store.beerInfoStore.avgRate}
+              readOnly
+              ref={ratingRef}
+            />
+          </FormControl>
+        </Box>
+      </Popover>
     </Paper>
   );
 });

@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { api } from "../service/api";
 import { BEER_KINDS, COUNTRIES } from "../utils/data";
+import { Beer } from "../model";
 
 export class BeerInfoStore {
   private _id = 0;
@@ -17,6 +18,8 @@ export class BeerInfoStore {
   private _avgFoamRate = 10;
   private _avgAromaRate = 10;
   private _avgColorRate = 10;
+
+  private _similarBeers: Beer[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -74,6 +77,10 @@ export class BeerInfoStore {
     return this._avgColorRate / 2;
   }
 
+  get similarBeers() {
+    return this._similarBeers;
+  }
+
   async fetch(beerId: number) {
     this._isLoading = true;
     const data = await api.getBeer(beerId);
@@ -86,6 +93,17 @@ export class BeerInfoStore {
         this._originCountryCode = data.originCountry;
         this._alcoholAmount = data.alcoholAmount;
         this._ibu = data.ibu;
+      });
+    }
+    this._isLoading = false;
+  }
+
+  async fetchSimilarBeers(beerId: number) {
+    this._isLoading = true;
+    const data = await api.getSimilarBeers(beerId);
+    if (!data.errorMessage) {
+      runInAction(() => {
+        this._similarBeers = data.beers;
       });
     }
     this._isLoading = false;

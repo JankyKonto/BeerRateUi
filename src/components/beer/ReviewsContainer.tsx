@@ -32,7 +32,7 @@ const ReviewsContainer = observer(() => {
         padding: "20px",
         borderRadius: "10px",
         width: { xs: "94vw", sm: "94vw", md: "47vw" },
-        height: { xs: "fit-content", sm: "fit-content", md: "85vh" },
+        height: { xs: "fit-content", sm: "fit-content", md: "65vh" },
         mx: 2,
       }}
     >
@@ -45,7 +45,7 @@ const ReviewsContainer = observer(() => {
           <Box
             sx={{
               width: "100%",
-              height: "20%",
+              height: "30%",
               display: "flex",
               flexWrap: "wrap",
               alignItems: "center",
@@ -83,7 +83,7 @@ const ReviewsContainer = observer(() => {
                     name="simple-controlled"
                     sx={{ mr: 2 }}
                     value={store.reviewsStore.selectedTasteRate}
-                    onChange={(e, newValue) => {
+                    onChange={(_, newValue) => {
                       store.reviewsStore.selectedTasteRate = newValue;
                     }}
                   />

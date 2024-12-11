@@ -412,7 +412,7 @@ export class Api {
   async getSimilarBeers(beerId: number): Promise<SimilarBeerListResponse> {
     try {
       const data = await this.fetchFromApi<SimilarBeerListResponse>(
-        `Beer/${beerId}/similar-beers`,
+        `Beer/similar-beers/${beerId}`,
         "GET"
       );
       return data;
