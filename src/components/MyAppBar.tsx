@@ -95,16 +95,11 @@ const MyAppBar = observer(() => {
             textWrap: "nowrap",
           }}
         >
-          {links.map((link, index) => (
-            <Button
-              component={NavLink}
-              to={link.path}
-              key={index}
-              sx={{ color: "#fff" }}
-            >
-              {link.title}
+          {store.authStore.isLoggedIn && (
+            <Button component={NavLink} to={"/add-beer"} sx={{ color: "#fff" }}>
+              Dodaj Piwo
             </Button>
-          ))}
+          )}
           {store.authStore.isAdmin && (
             <Button
               component={NavLink}
@@ -140,9 +135,6 @@ const MyAppBar = observer(() => {
                 anchorEl={userMenuAnchor}
                 onClose={() => setUserMenuAnchor(null)}
               >
-                <MenuItem onClick={() => setUserMenuAnchor(null)}>
-                  <Typography sx={{ textAlign: "center" }}>Profil</Typography>
-                </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <Typography sx={{ textAlign: "center" }}>
                     Wyloguj się
@@ -159,16 +151,20 @@ const MyAppBar = observer(() => {
       </Toolbar>
       <Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
         <List>
-          {links.map((link, index) => (
+          {store.authStore.isLoggedIn && (
+            <ListItemButton component={NavLink} to="/add-beer" sx={{ px: 8 }}>
+              <ListItemText primary="Dodaj Piwo" />
+            </ListItemButton>
+          )}
+          {store.authStore.isAdmin && (
             <ListItemButton
-              key={index}
               component={NavLink}
-              to={link.path}
+              to="/beer-confirmation"
               sx={{ px: 8 }}
             >
-              <ListItemText primary={link.title} />
+              <ListItemText primary="Potwierdź Piwo" />
             </ListItemButton>
-          ))}
+          )}
         </List>
       </Drawer>
     </AppBar>

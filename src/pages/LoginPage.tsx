@@ -11,7 +11,7 @@ import {
 import { store } from "../store/Store";
 import { observer } from "mobx-react-lite";
 import LoginPageSkeleton from "../components/skeletons/LoginPageSkeleton";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import CenteredModal from "../components/CenteredModal";
 
@@ -85,14 +85,14 @@ const LoginPage = observer(() => {
         )}
         <Typography variant="body2" align="center" sx={{ marginTop: "10px" }}>
           Nie masz konta?{" "}
-          <a style={{ color: "lightblue" }} href="/register">
+          <Link to="/register" style={{ color: "lightblue" }}>
             Zarejestruj się
-          </a>
+          </Link>
         </Typography>
         <Typography variant="body2" align="center" sx={{ marginTop: "10px" }}>
           Nie pamiętasz hasła?{" "}
           <a
-            style={{ color: "lightblue" }}
+            style={{ color: "lightblue", textDecoration: "underline" }}
             onClick={() => {
               store.loginPageStore.isResetPasswordModalShown = true;
             }}

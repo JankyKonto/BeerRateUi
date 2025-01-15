@@ -99,7 +99,9 @@ export class BeerInfoStore {
   }
 
   async fetchSimilarBeers(beerId: number) {
+    //debugger;
     this._isLoading = true;
+    this._similarBeers = [];
     const data = await api.getSimilarBeers(beerId);
     if (!data.errorMessage) {
       runInAction(() => {
