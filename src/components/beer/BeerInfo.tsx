@@ -95,12 +95,16 @@ const BeerInfo = observer(() => {
               src={api.getBeerImageUrl(store.beerInfoStore.id)}
             />
           </Box>
-          <div onClick={() => handlePopoverOpen()}>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => handlePopoverOpen()}
+          >
             <Rating
               precision={0.01}
               sx={{ mt: 2 }}
               value={store.beerInfoStore.avgRate}
               readOnly
+              ref={ratingRef}
             />
           </div>
         </Box>
@@ -224,6 +228,7 @@ const BeerInfo = observer(() => {
         open={isPopoverOpen}
         anchorEl={popoverAnchor}
         onClose={handlePopoverClose}
+        sx={{ top: "30px" }}
       >
         <Box>
           <FormControl>
@@ -231,9 +236,8 @@ const BeerInfo = observer(() => {
             <Rating
               precision={0.01}
               sx={{ mt: 2 }}
-              value={store.beerInfoStore.avgRate}
+              value={store.beerInfoStore.avgTasteRate}
               readOnly
-              ref={ratingRef}
             />
           </FormControl>
           <FormControl>
@@ -241,9 +245,8 @@ const BeerInfo = observer(() => {
             <Rating
               precision={0.01}
               sx={{ mt: 2 }}
-              value={store.beerInfoStore.avgRate}
+              value={store.beerInfoStore.avgAromaRate}
               readOnly
-              ref={ratingRef}
             />
           </FormControl>
           <FormControl>
@@ -251,9 +254,8 @@ const BeerInfo = observer(() => {
             <Rating
               precision={0.01}
               sx={{ mt: 2 }}
-              value={store.beerInfoStore.avgRate}
+              value={store.beerInfoStore.avgFoamRate}
               readOnly
-              ref={ratingRef}
             />
           </FormControl>
           <FormControl>
@@ -261,9 +263,8 @@ const BeerInfo = observer(() => {
             <Rating
               precision={0.01}
               sx={{ mt: 2 }}
-              value={store.beerInfoStore.avgRate}
+              value={store.beerInfoStore.avgColorRate}
               readOnly
-              ref={ratingRef}
             />
           </FormControl>
         </Box>

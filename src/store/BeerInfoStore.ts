@@ -13,11 +13,10 @@ export class BeerInfoStore {
   private _ibu = 0;
   private _isLoading = false;
 
-  private _avgRate = 8.7;
-  private _avgTasteRate = 10;
-  private _avgFoamRate = 10;
-  private _avgAromaRate = 10;
-  private _avgColorRate = 10;
+  private _avgTasteRate = 0;
+  private _avgFoamRate = 0;
+  private _avgAromaRate = 0;
+  private _avgColorRate = 0;
 
   private _similarBeers: Beer[] = [];
 
@@ -58,7 +57,13 @@ export class BeerInfoStore {
   }
 
   get avgRate() {
-    return this._avgRate / 2;
+    return (
+      (this._avgAromaRate +
+        this._avgColorRate +
+        this._avgFoamRate +
+        this._avgTasteRate) /
+      8
+    );
   }
 
   get avgTasteRate() {
@@ -93,6 +98,10 @@ export class BeerInfoStore {
         this._originCountryCode = data.originCountry;
         this._alcoholAmount = data.alcoholAmount;
         this._ibu = data.ibu;
+        this._avgTasteRate = data.tasteAverage;
+        this._avgAromaRate = data.aromaAverage;
+        this._avgFoamRate = data.foamAverage;
+        this._avgColorRate = data.colorAverage;
       });
     }
     this._isLoading = false;

@@ -72,7 +72,11 @@ export class AddBeerPageStore {
 
   set alcoholAmount(value: number | null) {
     this._errorMessage = "";
-    this._alcoholAmount = value;
+    if (value && value >= 0 && value <= 100) {
+      this._alcoholAmount = Math.round(value * 10) / 10;
+    } else if (!value) {
+      this._alcoholAmount = null;
+    }
   }
 
   get ibu(): number | null {
@@ -81,7 +85,11 @@ export class AddBeerPageStore {
 
   set ibu(value: number | null) {
     this._errorMessage = "";
-    this._ibu = value;
+    if (value && value >= 0) {
+      this._ibu = Math.round(value);
+    } else if (!value) {
+      this._ibu = null;
+    }
   }
 
   get beerImage() {

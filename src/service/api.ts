@@ -39,6 +39,10 @@ export interface BeerResponse {
   alcoholAmount: number;
   ibu: number;
   image: string;
+  tasteAverage: number;
+  aromaAverage: number;
+  foamAverage: number;
+  colorAverage: number;
   errorMessage?: string;
 }
 
@@ -81,7 +85,7 @@ export class Api {
     if (response.ok) {
       return data;
     } else {
-      throw new Error(data.message || "Fetch error occured");
+      throw new Error(data.errorMessage || "Fetch error occured");
     }
   }
 
@@ -101,7 +105,7 @@ export class Api {
     if (response.ok) {
       return data;
     } else {
-      throw new Error(data.message || "Fetch error occured");
+      throw new Error(data.errorMessage || "Fetch error occured");
     }
   }
 
@@ -305,6 +309,10 @@ export class Api {
         kind: 0,
         image: "",
         originCountry: "",
+        tasteAverage: 0,
+        aromaAverage: 0,
+        foamAverage: 0,
+        colorAverage: 0,
         errorMessage: error.message || "Error in fetchBeerList",
       };
     }
